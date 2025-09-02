@@ -3,7 +3,7 @@
 // date created: 08/31/2025
 
 // lab 1 FPGA and MCU Setup and Testing
-module top(
+module lab1_mm(
 	input logic [3:0] s,
 	output logic [2:0] led, 
 	output logic [6:0] seg
