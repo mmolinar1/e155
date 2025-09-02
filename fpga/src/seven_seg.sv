@@ -5,11 +5,11 @@
 // 7-segment display
 // seg[0]=A, seg[1]=B, seg[2]=C, seg[3]=D, seg[4]=E, seg[5]=F, seg[6]=G
 module seven_seg(
-    input  logic [3:0] digit,  // Input hex digit
+    input  logic [3:0] s,  // Input hex digit
     output logic [6:0] seg     // 7-segment outputs
 );
     always_comb begin
-        case (digit)
+        case (s)
             4'h0: seg = 7'b1000000;  // 0: All except G
             4'h1: seg = 7'b1111001;  // 1: B C
             4'h2: seg = 7'b0100100;  // 2: A B G E D
