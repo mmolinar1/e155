@@ -1,4 +1,8 @@
 # Lattice Radiant files
+# Lattice Radiant files
+# Mac OS files
+.DS_Store
+
 *.html
 impl*/
 *.xml
