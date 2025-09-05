@@ -4,6 +4,7 @@
 
 // 7-segment display
 // seg[0]=A, seg[1]=B, seg[2]=C, seg[3]=D, seg[4]=E, seg[5]=F, seg[6]=G
+
 module seven_seg(
     input  logic [3:0] s,      // Input hex
     output logic [6:0] seg     // 7-segment outputs
