@@ -5,7 +5,9 @@
 // test bench for top level module that has two submodules:
 // led_control and seven_seg
 
-module top();
+`timescale 1ps/1ps
+
+module lab1_mm_tb();
 	
 //// Testbench module tests another module called the device under test(DUT).
 // It applies inputs to DUT and check if outputs are as expected.
@@ -21,7 +23,7 @@ logic [6:0] seg, seg_expected;
 logic [2:0] led, led_expected;
 
 logic [31:0] vectornum, errors;
-logic [10:0] testvectors[10000:0];
+logic [13:0] testvectors[10000:0];
 
 top dut(s, led, seg);
 //// Generate clock.

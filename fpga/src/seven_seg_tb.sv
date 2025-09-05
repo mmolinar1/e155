@@ -3,6 +3,8 @@
 // date created: 09/1/2025
 
 // test bench for the seven segment display module
+
+`timescale 1ps/1ps
 module seven_seg_tb();
 	
 //// Testbench module tests another module called the device under test(DUT).

@@ -4,6 +4,7 @@
 
 // test bench for the on-board LED control module
 
+`timescale 1ps/1ps
 module led_control_tb();
 	
 //// Testbench module tests another module called the device under test(DUT).
