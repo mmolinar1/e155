@@ -8,8 +8,7 @@
 
 module led_control(
 	input logic [3:0] s,
-	output logic [2:0] led, 
-	output logic [6:0] seg
+	output logic [2:0] led
 );
 
 	logic int_osc;

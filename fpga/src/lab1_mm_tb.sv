@@ -57,7 +57,7 @@ begin
 // avoid data changes concurrently with the clock.
 #1;
 
-{s, led_expected, seg_expected} = testvectors[vectornum];
+{s, seg_expected, led_expected} = testvectors[vectornum];
 end
 //// Check results on falling edge of clk.
 always @(negedge clk)
@@ -68,7 +68,8 @@ if (~reset) begin
 // expectation.
 if (led !== led_expected || seg != seg_expected) begin
 $display("Error: inputs = %b", {s});
-$display(" outputs = %b (%b expected)", led, seg);
+$display(" led = %b (%b expected)", led, led_expected);
+$display(" seg = %b (%b expected)", seg, seg_expected);
 //// Increment the count of errors.
 errors = errors + 1;
 end

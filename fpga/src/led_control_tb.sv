@@ -20,7 +20,7 @@ logic [2:0] led, led_expected;
 logic [31:0] vectornum, errors;
 logic [6:0] testvectors[10000:0];
 
-seven_seg dut(s, seg);
+led_control dut(s, led);
 //// Generate clock.
 always
 begin
@@ -61,7 +61,7 @@ if (~reset) begin
 	
 //// Detect error by checking if outputs from DUT match 
 // expectation.
-if (s !== led_expected) begin
+if (led !== led_expected) begin
 $display("Error: inputs = %b", {s});
 $display(" outputs = %b (%b expected)", led, led_expected);
 //// Increment the count of errors.

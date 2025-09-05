@@ -10,7 +10,7 @@ module top(
 );
 
 	// led control module
-	led_control ledcontrol(.s(s), .led(led), .seg(seg));
+	led_control ledcontrol(.s(s), .led(led));
 
     // seven segment module
 	seven_seg sevseg(.s(s), .seg(seg));
