@@ -34,8 +34,8 @@ module top(
         .switch(switch)
     );
 
-    // display mux module to turn on the correct display
-    display_mux disp_mux(
+    // display gate module to turn on the correct display
+    display_gate disp_gate(
         .seven_seg_en(seven_seg_en)
         .seven_seg_1(seven_seg_1)
         .seven_seg_2(seven_seg_2)
