@@ -2,27 +2,25 @@
 // email: mmolinar@hmc.edu
 // date created: 09/06/2025
 
-// test bench for summing the switch inputs
+// test bench for switch mux which determines which switch to use as an input
 
 `timescale 1ps/1ps
 
-module input_sum_tb();
+module switch_mux_tb();
 
     logic clk, reset; // 'clk' & 'reset' are common names for the clock and reset
 
-    logic [3:0] s1;
-    logic [3:0] s2;
-    logic [4:0] sum, sum_expected;
+    logic [3:0] s1, s2 ;    // switches for displays 1 + 2
+    logic seven_seg_en;    // seven-segment enable
+    logic [3:0] switch, switch_expected;
     logic [31:0] vectornum, errors;
+    logic [12:0] testvectors[10000:0];
 
-    logic [3:0] x;    // var holding value for s1
-    logic [3:0] y;    // var holding value for s2
-    logic done;       // to keep track of when all test cases are exhausted
-
-    input_sum dut(
+    switch_mux dut(
         .s1(s1),
         .s2(s2),
-        .sum(sum)
+        .seven_seg_en(seven_seg_en)
+        .switch(switch)
     );
 
     // Generate clock: 10 time units period (5 high, 5 low)
@@ -37,8 +35,6 @@ module input_sum_tb();
         errors = 0;
         reset = 1; #22;
         reset = 0;
-        x = 0;
-        y = 0;
     end
 
     // Apply test vectors on rising edge of clk
@@ -46,11 +42,7 @@ module input_sum_tb();
         // Apply testvectors 1 time unit after rising edge to avoid data changes concurrently with the clock
         #1;
 
-        // set values for test case
-        s1 = x;
-        s2 = y;
-        sum_expected = x + y
-
+        {s1, s2, sum_expected} = testvectors[vectornum];
     end
 
     // Check results on falling edge of clk
@@ -63,19 +55,13 @@ module input_sum_tb();
                 // Increment the count of errors
                 errors = errors + 1;
             end
-
-            // Update values for next test case
-            if (y == 15) begin
-                y = 0;
-                if (x == 15) begin
-                    done = 1; // All test cases exhausted
-                    $display("All test cases completed with %d errors", errors);
-                    $stop;
-                end else begin
-                    x = x + 1;
-                end
-            end else begin
-                y = y + 1;
+            // Increment the count of vectors
+            vectornum = vectornum + 1;
+            // When the test vector becomes all 'x', the test is complete
+            if (testvectors[vectornum] === 13'bx) begin
+                $display("%d tests completed with %d errors", vectornum, errors);
+                // Stop the simulation
+                $stop;
             end
         end
     end
