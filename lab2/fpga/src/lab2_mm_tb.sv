@@ -15,13 +15,15 @@ module lab2_mm_tb();
     logic [3:0] s1, s2 ;    // switches for displays 1 + 2
     logic [6:0] seg;
     logic seven_seg_1, seven_seg_2;
+    logic [31:0] errors;
 
     top dut(
-        .clk(clk)
+        .clk(clk),
+        .reset(reset),
         .s1(s1),
         .s2(s2),
-        .seven_seg_en(seven_seg_en),
-        .switch(switch)
+        .seven_seg_1(seven_seg_1),
+        .seven_seg_2(seven_seg_2)
     );
 
     // Generate clock: 10 time units period (5 high, 5 low)
@@ -35,9 +37,10 @@ module lab2_mm_tb();
         // Initialize switch inputs
         s1 = 0;
         s2 = 0;
-        
-        // Wait for a few clock cycles
-        #30;
+        errors = 0;
+
+        reset = 1; #22;
+        reset = 0;
         
         // first test
         
@@ -54,6 +57,7 @@ module lab2_mm_tb();
             $display("First test failed");
             $display("  seg=%b, expected=%b, seven_seg_1=%b, seven_seg_2=%b", 
                      seg, 7'b0110000, seven_seg_1, seven_seg_2);
+            errors = errors + 1;
         end
         
         // check display 2
@@ -64,6 +68,7 @@ module lab2_mm_tb();
             $display("First test failed");
             $display("  seg=%b, expected=%b, seven_seg_1=%b, seven_seg_2=%b", 
                      seg, 7'b0010010, seven_seg_1, seven_seg_2);
+            errors = errors + 1;
         end
         
         // second test
@@ -79,6 +84,7 @@ module lab2_mm_tb();
         if (seg !== 7'b0001110 || seven_seg_1 !== 1'b1) begin
             $display("Second test failed");
             $display("  seg=%b, expected=%b", seg, 7'b0001110);
+            errors = errors + 1;
         end
         
         // check display 2
@@ -88,6 +94,7 @@ module lab2_mm_tb();
         if (seg !== 7'b0001110 || seven_seg_2 !== 1'b1) begin
             $display("Second test failed");
             $display("  seg=%b, expected=%b", seg, 7'b0001110);
+            errors = errors + 1;
         end
         
         // third test
@@ -103,6 +110,7 @@ module lab2_mm_tb();
         if (seg !== 7'b0001000 || seven_seg_1 !== 1'b1) begin
             $display("Third test failed");
             $display("  seg=%b, expected=%b", seg, 7'b0001000);
+            errors = errors + 1;
         end
         
         // Check display 2
@@ -112,6 +120,7 @@ module lab2_mm_tb();
         if (seg !== 7'b1111000 || seven_seg_2 !== 1'b1) begin
             $display("Third test failed");
             $display("  seg=%b, expected=%b", seg, 7'b1111000);
+            errors = errors + 1;
         end
         $display("Tests completed ");
         // stop the simulation.

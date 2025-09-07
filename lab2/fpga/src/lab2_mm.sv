@@ -5,7 +5,7 @@
 // Lab 2: Multiplexed 7-Segment Display
 
 module top(
-    input clk,
+    input clk, reset,
 	input logic [3:0] s1,    // switches for display 1
     input logic [3:0] s2,    // switches for display 2, 
 	output logic [6:0] seg,
@@ -37,8 +37,11 @@ module top(
     // end
 
     // counter using clk for testing
-	always_ff @(posedge clk) begin
-        if (counter == 1'b1) begin
+	always_ff @(posedge clk, posedge reset) begin
+        if (reset) begin
+            counter <= 0;
+            seven_seg_en <= 0;    // toggle seven-segment enable
+        end else if (counter == 1'b1) begin
             counter <= 0;
             seven_seg_en <= ~seven_seg_en;    // toggle seven-segment enable
         end else begin
