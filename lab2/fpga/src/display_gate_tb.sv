@@ -11,9 +11,9 @@ module display_gate_tb();
 
     logic clk, reset; // 'clk' & 'reset' are common names for the clock and reset
 
-    logic seven_seg_en,
-    logic seven_seg_1, seven_seg_1_expected
-    logic seven_seg_2, seven_seg_2_expected
+    logic seven_seg_en;
+    logic seven_seg_1, seven_seg_1_expected;
+    logic seven_seg_2, seven_seg_2_expected;
     logic [31:0] vectornum, errors;
     logic [2:0] testvectors[10000:0];
 

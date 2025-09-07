@@ -1,0 +1,312 @@
+m255
+K4
+z2
+!s12c _opt2
+Z0 !s99 nomlopt
+!s12c _opt1
+R0
+!s12c _opt
+R0
+!s11f vlog 2024.2 2024.05, May 20 2024
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z1 dC:/Users/mmolinar/my_designs/lab2_mm
+T_opt
+!s110 1757274313
+V84O;7Vo2_@lHPIznT0QPg3
+04 12 4 work input_sum_tb fast 0
+=1-00be43eaec35-68bde0c9-154-3508
+R0
+Z2 !s12f OEM25U2 
+Z3 !s12b OEM100
+Z4 !s124 OEM100
+Z5 !s135 nogc
+Z6 o-quiet -auto_acc_if_foreign -work work +acc -L iCE40UP
+Z7 tCvgOpt 0
+n@_opt
+Z8 OL;O;2024.2;79
+R1
+T_opt1
+!s110 1757274837
+V`7W<X5;J_iKB?6P1`_icJ1
+04 15 4 work display_gate_tb fast 0
+=1-00be43eaec35-68bde2d5-1a0-7cec
+R0
+R2
+R3
+R4
+R5
+R6
+R7
+n@_opt1
+R8
+R1
+T_opt2
+!s110 1757275076
+VPFOgBVz55z314lKGl1N`a2
+04 13 4 work switch_mux_tb fast 0
+=1-00be43eaec35-68bde3c4-eb-4484
+R0
+R2
+R3
+R4
+R5
+R6
+R7
+n@_opt2
+R8
+R1
+vdisplay_gate
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate.sv
+Z9 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z10 !s110 1757276304
+!i10b 1
+!s100 EJVf]QM_d::eFnU;Dng^I1
+I7OzkVV9NEJb_G_]Ql1Q@I1
+S1
+Z11 dC:/Users/mmolinar/e155-lab1/lab2/fpga/src
+w1757273301
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate.sv
+!i122 63
+L0 7 11
+Z12 VDg1SIo80bB@j0V0VzS_@n1
+Z13 OL;L;2024.2;79
+r1
+!s85 0
+31
+Z14 !s108 1757276304.000000
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate.sv|
+!i113 0
+Z15 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R7
+vdisplay_gate_tb
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate_tb.sv
+R9
+R10
+!i10b 1
+!s100 <^5dUR2Q8Ahh:L^@S@Xe_1
+I_MRYf<k[h=VY;b5<_F@Y=2
+S1
+R11
+w1757273789
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate_tb.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate_tb.sv
+!i122 64
+L0 10 61
+R12
+R13
+r1
+!s85 0
+31
+R14
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate_tb.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/display_gate_tb.sv|
+!i113 0
+R15
+R7
+vinput_sum
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum.sv
+R9
+R10
+!i10b 1
+!s100 J6g;m<39gMlY_=_cSNiJ52
+I@VPec8<h2nDLDBfJZM=fF1
+S1
+R11
+w1757273269
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum.sv
+!i122 65
+L0 7 9
+R12
+R13
+r1
+!s85 0
+31
+R14
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum.sv|
+!i113 0
+R15
+R7
+vinput_sum_tb
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum_tb.sv
+R9
+R10
+!i10b 1
+!s100 ZbY22@VC<LdOhNHnlBVY>1
+I=R^lA>m[[:Nnkm?1e5OCi2
+S1
+R11
+w1757273967
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum_tb.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum_tb.sv
+!i122 66
+L0 9 75
+R12
+R13
+r1
+!s85 0
+31
+R14
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum_tb.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/input_sum_tb.sv|
+!i113 0
+R15
+R7
+vlab2_mm_tb
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm_tb.sv
+R9
+Z16 !s110 1757276305
+!i10b 1
+!s100 j?hS5_i`O:P[Y65MDFW_C2
+I^>?ZXo;B`<BIfL5VD4YFQ2
+S1
+R11
+w1757275710
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm_tb.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm_tb.sv
+!i122 68
+L0 9 61
+R12
+R13
+r1
+!s85 0
+31
+Z17 !s108 1757276305.000000
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm_tb.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm_tb.sv|
+!i113 0
+R15
+R7
+vseven_seg
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg.sv
+R9
+R16
+!i10b 1
+!s100 icAJ?dkl[e`lnScN4dd?S0
+InBePL6l[ZONU[WRP:`VGg3
+S1
+R11
+Z18 w1757192223
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg.sv
+!i122 69
+L0 8 26
+R12
+R13
+r1
+!s85 0
+31
+R17
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg.sv|
+!i113 0
+R15
+R7
+vseven_seg_tb
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg_tb.sv
+R9
+R16
+!i10b 1
+!s100 k>Ifh[kU>VH5FS7nkUN^02
+I8EG2TFzYYz5>h>JmnfTNc3
+S1
+R11
+R18
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg_tb.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg_tb.sv
+!i122 70
+L0 8 75
+R12
+R13
+r1
+!s85 0
+31
+R17
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg_tb.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/seven_seg_tb.sv|
+!i113 0
+R15
+R7
+vswitch_mux
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux.sv
+R9
+R16
+!i10b 1
+!s100 >KIX?7a`@mmGlG;4m1PDa1
+IJZ`@6S7o@j>DZ;k8T;L6N2
+S1
+R11
+w1757273351
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux.sv
+!i122 71
+L0 7 10
+R12
+R13
+r1
+!s85 0
+31
+R17
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux.sv|
+!i113 0
+R15
+R7
+vswitch_mux_tb
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux_tb.sv
+R9
+R16
+!i10b 1
+!s100 R_><0Rk1z60ekmj<[M6Ql3
+I7LT95bTNX0HJV`<Fe04YI1
+S1
+R11
+w1757274182
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux_tb.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux_tb.sv
+!i122 72
+L0 9 80
+R12
+R13
+r1
+!s85 0
+31
+R17
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux_tb.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux_tb.sv|
+!i113 0
+R15
+R7
+vtop
+2C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm.sv
+R9
+R16
+!i10b 1
+!s100 LeM246@57fQ@dIR?^`OCi1
+I<BzMf3^ioTiKNV];Hg3m63
+S1
+R11
+w1757273254
+8C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm.sv
+FC:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm.sv
+!i122 67
+L0 7 57
+R12
+R13
+r1
+!s85 0
+31
+R17
+!s107 C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm.sv|
+!i113 0
+R15
+R7

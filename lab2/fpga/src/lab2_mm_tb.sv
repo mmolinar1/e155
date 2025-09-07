@@ -2,7 +2,10 @@
 // email: mmolinar@hmc.edu
 // date created: 09/06/2025
 
-// test bench for summing the switch inputs
+// test bench for lab 2 top module, which drives
+// two seven segment displays via time multiplexing
+// the switch inputs for these displays are added, such
+// that the sum is displayed on other LEDs
 
 `timescale 1ps/1ps
 
@@ -11,6 +14,7 @@ module lab2_mm_tb();
     logic clk, reset; // 'clk' & 'reset' are common names for the clock and reset
     logic [3:0] s1, s2 ;    // switches for displays 1 + 2
     logic seven_seg_en;    // seven-segment enable
+    logic [4:0] sum, sum_expected;
     logic [3:0] switch, switch_expected;
     logic [31:0] vectornum, errors;
     logic [12:0] testvectors[10000:0];
@@ -18,7 +22,7 @@ module lab2_mm_tb();
     top dut(
         .s1(s1),
         .s2(s2),
-        .seven_seg_en(seven_seg_en)
+        .seven_seg_en(seven_seg_en),
         .switch(switch)
     );
 

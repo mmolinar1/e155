@@ -5,9 +5,10 @@
 // Lab 2: Multiplexed 7-Segment Display
 
 module top(
+    input clk,
 	input logic [3:0] s1,    // switches for display 1
     input logic [3:0] s2,    // switches for display 2, 
-	output logic [6:0] seg
+	output logic [6:0] seg,
     output logic seven_seg_1,
     output logic seven_seg_2
 );
@@ -25,9 +26,19 @@ module top(
 	logic [14:0] counter = 0;    // counter for 24 KHz
     parameter CLOCK_DIVIDER = 25'd24000;   
 	
-	// counter
-	always_ff @(posedge int_osc) begin
-        if (counter == CLOCK_DIVIDER) begin
+	// counter using high-speed oscillator
+	// always_ff @(posedge int_osc) begin
+    //     if (counter == CLOCK_DIVIDER) begin
+    //         counter <= 0;
+    //         seven_seg_en <= ~seven_seg_en;    // toggle seven-segment enable
+    //     end else begin
+    //         counter <= counter + 1'b1;
+    //     end
+    // end
+
+    // counter using clk for testing
+	always_ff @(posedge clk) begin
+        if (counter == 1'b1) begin
             counter <= 0;
             seven_seg_en <= ~seven_seg_en;    // toggle seven-segment enable
         end else begin
@@ -37,21 +48,21 @@ module top(
     
     // switch mux module to use the right switch inputs
     switch_mux sw_mux(
-        .s1(s1)
-        .s2(s2)
-        .seven_seg_en(seven_seg_en)
+        .s1(s1),
+        .s2(s2),
+        .seven_seg_en(seven_seg_en),
         .switch(switch)
     );
 
     // display gate module to turn on the correct display
     display_gate disp_gate(
-        .seven_seg_en(seven_seg_en)
-        .seven_seg_1(seven_seg_1)
+        .seven_seg_en(seven_seg_en),
+        .seven_seg_1(seven_seg_1),
         .seven_seg_2(seven_seg_2)
     );
 
     // seven segment module to drive a seven-segment module
-	seven_seg sevseg(.s(display), .seg(seg));
+	seven_seg sevseg(.s(switch), .seg(seg));
 
     // adder module to sum inputs from both switches
     input_sum adder(

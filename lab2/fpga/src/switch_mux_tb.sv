@@ -15,11 +15,16 @@ module switch_mux_tb();
     logic [3:0] switch, switch_expected;
     logic [31:0] vectornum, errors;
     logic [12:0] testvectors[10000:0];
+	
+	logic [3:0] x;    // logic holding value for s1
+    logic [3:0] y;    // logic holding value for s2
+	logic z; 		  // logic to track seven_seg_en
+    logic done;       // logic keep track of when all test cases are exhausted
 
     switch_mux dut(
         .s1(s1),
         .s2(s2),
-        .seven_seg_en(seven_seg_en)
+        .seven_seg_en(seven_seg_en),
         .switch(switch)
     );
 
@@ -35,6 +40,9 @@ module switch_mux_tb();
         errors = 0;
         reset = 1; #22;
         reset = 0;
+		x = 0;
+		y = 0;
+		z = 0;
     end
 
     // Apply test vectors on rising edge of clk
@@ -42,26 +50,37 @@ module switch_mux_tb();
         // Apply testvectors 1 time unit after rising edge to avoid data changes concurrently with the clock
         #1;
 
-        {s1, s2, sum_expected} = testvectors[vectornum];
+        // set values for test case
+        s1 = x;
+        s2 = y;
+		seven_seg_en = z;
+        switch_expected = seven_seg_en ? s2 : s1;
     end
 
     // Check results on falling edge of clk
     always @(negedge clk) begin
         if (~reset) begin
             // Detect error by checking if outputs from DUT match expectation
-            if (sum !== sum_expected) begin
-                $display("Error: inputs = %b", {s1, s2});
-                $display(" outputs = %b (%b expected)", sum, sum_expected);
+            if (switch !== switch_expected) begin
+                $display("Error: inputs = %b", {s1, s2, seven_seg_en});
+                $display(" outputs = %b (%b expected)", switch, switch_expected);
                 // Increment the count of errors
                 errors = errors + 1;
             end
-            // Increment the count of vectors
-            vectornum = vectornum + 1;
-            // When the test vector becomes all 'x', the test is complete
-            if (testvectors[vectornum] === 13'bx) begin
-                $display("%d tests completed with %d errors", vectornum, errors);
-                // Stop the simulation
-                $stop;
+
+            // Update values for next test case
+			z = ~z; // flip z to switch the enable
+            if (y == 15) begin
+                y = 0;
+                if (x == 15) begin
+                    done = 1; // All test cases exhausted
+                    $display("All test cases completed with %d errors", errors);
+                    $stop;
+                end else begin
+                    x = x + 1;
+                end
+            end else begin
+                y = y + 1;
             end
         end
     end

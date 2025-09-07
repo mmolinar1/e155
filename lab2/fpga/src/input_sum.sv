@@ -10,6 +10,6 @@ module input_sum(
     output logic [4:0] sum    
 );
 
-    sum = s1 + s2
+    assign sum = s1 + s2;
 
 endmodule

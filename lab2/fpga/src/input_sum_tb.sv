@@ -15,9 +15,9 @@ module input_sum_tb();
     logic [4:0] sum, sum_expected;
     logic [31:0] vectornum, errors;
 
-    logic [3:0] x;    // var holding value for s1
-    logic [3:0] y;    // var holding value for s2
-    logic done;       // to keep track of when all test cases are exhausted
+    logic [3:0] x;    // logic holding value for s1
+    logic [3:0] y;    // logic holding value for s2
+    logic done;       // logic keep track of when all test cases are exhausted
 
     input_sum dut(
         .s1(s1),
@@ -49,8 +49,8 @@ module input_sum_tb();
         // set values for test case
         s1 = x;
         s2 = y;
-        sum_expected = x + y
-
+        sum_expected = x + y;
+		
     end
 
     // Check results on falling edge of clk
