@@ -5,6 +5,13 @@ Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
 Top level modules:
 	display_gate
 
+} {} {}} C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm_tb.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/e155-lab1/lab2/fpga/src/lab2_mm_tb.sv
+Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
+-- Compiling module lab2_mm_tb
+
+Top level modules:
+	lab2_mm_tb
+
 } {} {}} C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/e155-lab1/lab2/fpga/src/switch_mux.sv
 Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
 -- Compiling module switch_mux

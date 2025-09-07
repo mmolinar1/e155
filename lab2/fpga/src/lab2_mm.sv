@@ -36,7 +36,9 @@ module top(
     //     end
     // end
 
-    // counter using clk for testing
+    // counter using clk
+    // this is only used for modelsim since
+    // questa can't interpret what HSOSC is
 	always_ff @(posedge clk, posedge reset) begin
         if (reset) begin
             counter <= 0;
