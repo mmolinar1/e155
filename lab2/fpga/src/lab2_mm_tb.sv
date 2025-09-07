@@ -13,13 +13,11 @@ module lab2_mm_tb();
 
     logic clk, reset; // 'clk' & 'reset' are common names for the clock and reset
     logic [3:0] s1, s2 ;    // switches for displays 1 + 2
-    logic seven_seg_en;    // seven-segment enable
-    logic [4:0] sum, sum_expected;
-    logic [3:0] switch, switch_expected;
-    logic [31:0] vectornum, errors;
-    logic [12:0] testvectors[10000:0];
+    logic [6:0] seg;
+    logic seven_seg_1, seven_seg_2;
 
     top dut(
+        .clk(clk)
         .s1(s1),
         .s2(s2),
         .seven_seg_en(seven_seg_en),
@@ -34,39 +32,89 @@ module lab2_mm_tb();
 
     // Start of test
     initial begin
-        vectornum = 0;
-        errors = 0;
-        reset = 1; #22;
-        reset = 0;
-    end
-
-    // Apply test vectors on rising edge of clk
-    always @(posedge clk) begin
-        // Apply testvectors 1 time unit after rising edge to avoid data changes concurrently with the clock
-        #1;
-
-        {s1, s2, sum_expected} = testvectors[vectornum];
-    end
-
-    // Check results on falling edge of clk
-    always @(negedge clk) begin
-        if (~reset) begin
-            // Detect error by checking if outputs from DUT match expectation
-            if (sum !== sum_expected) begin
-                $display("Error: inputs = %b", {s1, s2});
-                $display(" outputs = %b (%b expected)", sum, sum_expected);
-                // Increment the count of errors
-                errors = errors + 1;
-            end
-            // Increment the count of vectors
-            vectornum = vectornum + 1;
-            // When the test vector becomes all 'x', the test is complete
-            if (testvectors[vectornum] === 13'bx) begin
-                $display("%d tests completed with %d errors", vectornum, errors);
-                // Stop the simulation
-                $stop;
-            end
+        // Initialize switch inputs
+        s1 = 0;
+        s2 = 0;
+        
+        // Wait for a few clock cycles
+        #30;
+        
+        // first test
+        
+        // Set inputs
+        s1 = 4'b0011; // 3
+        s2 = 4'b0101; // 5
+        
+        // wait for the counter to toggle seven_seg_en
+        // first check display 1
+        wait(seven_seg_1 == 1'b1);
+        #10;
+        
+        if (seg !== 7'b0110000 || seven_seg_1 !== 1'b1 || seven_seg_2 !== 1'b0) begin
+            $display("First test failed");
+            $display("  seg=%b, expected=%b, seven_seg_1=%b, seven_seg_2=%b", 
+                     seg, 7'b0110000, seven_seg_1, seven_seg_2);
         end
+        
+        // check display 2
+        wait(seven_seg_2 == 1'b1);
+        #10;
+        
+        if (seg !== 7'b0010010 || seven_seg_2 !== 1'b1 || seven_seg_1 !== 1'b0) begin
+            $display("First test failed");
+            $display("  seg=%b, expected=%b, seven_seg_1=%b, seven_seg_2=%b", 
+                     seg, 7'b0010010, seven_seg_1, seven_seg_2);
+        end
+        
+        // second test
+        
+        // set both inputs to max
+        s1 = 4'b1111; // 15
+        s2 = 4'b1111; // 15
+        
+        // check display 1
+        wait(seven_seg_1 == 1'b1);
+        #10;
+        
+        if (seg !== 7'b0001110 || seven_seg_1 !== 1'b1) begin
+            $display("Second test failed");
+            $display("  seg=%b, expected=%b", seg, 7'b0001110);
+        end
+        
+        // check display 2
+        wait(seven_seg_2 == 1'b1);
+        #10;
+        
+        if (seg !== 7'b0001110 || seven_seg_2 !== 1'b1) begin
+            $display("Second test failed");
+            $display("  seg=%b, expected=%b", seg, 7'b0001110);
+        end
+        
+        // third test
+        
+        s1 = 4'b1010; // 10
+        s2 = 4'b0111; // 7
+        // Sum should be 17 (5'b10001)
+        
+        // Check display 1
+        wait(seven_seg_1 == 1'b1);
+        #10;
+        
+        if (seg !== 7'b0001000 || seven_seg_1 !== 1'b1) begin
+            $display("Third test failed");
+            $display("  seg=%b, expected=%b", seg, 7'b0001000);
+        end
+        
+        // Check display 2
+        wait(seven_seg_2 == 1'b1);
+        #10;
+        
+        if (seg !== 7'b1111000 || seven_seg_2 !== 1'b1) begin
+            $display("Third test failed");
+            $display("  seg=%b, expected=%b", seg, 7'b1111000);
+        end
+        $display("Tests completed ");
+        // stop the simulation.
+        $stop;
     end
-
 endmodule
