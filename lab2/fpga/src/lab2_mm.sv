@@ -10,12 +10,12 @@ module top(
     input logic [3:0] s2,    // switches for display 2, 
 	output logic [6:0] seg,
     output logic seven_seg_1,
-    output logic seven_seg_2
+    output logic seven_seg_2,
+    output logic [4:0] sum   // for input summing
 );
 
     logic int_osc;
     logic seven_seg_en;    // seven-segment enable
-    logic [4:0] sum;      // for input summing
     logic [3:0] switch;   // switch input that will be used
 
 	// Internal high-speed oscillator
