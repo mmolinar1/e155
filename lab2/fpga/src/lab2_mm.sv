@@ -22,9 +22,9 @@ module top(
 	HSOSC hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
 
     // clock counter to create the enable signal
-	// Clock divider variable at 24 KHz
-	logic [14:0] counter = 0;    // counter for 24 KHz
-    parameter CLOCK_DIVIDER = 25'd24000;   
+	// Clock divider variable at 400 KHz
+	logic [25:0] counter = 0;    // counter for 400 KHz
+    parameter CLOCK_DIVIDER = 25'd400000;   
 	
 	// counter using high-speed oscillator
 	// always_ff @(posedge int_osc) begin
