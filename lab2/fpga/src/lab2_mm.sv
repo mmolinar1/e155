@@ -8,7 +8,7 @@
 // module (only seven output pins)
 // by taking advantage of time multiplexing
 
-module top(
+module lab2_mm(
     input clk, reset,
 	input logic [3:0] s1,    // switches for display 1
     input logic [3:0] s2,    // switches for display 2, 
