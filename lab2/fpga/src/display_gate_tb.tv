@@ -2,6 +2,9 @@
 // email: mmolinar@hmc.edu
 // date created: 09/06/2025
 
+// These are test vectors for the
+//display_gate test bench
+
 // seven_seg_en _ seven_seg_en_1 _ seven_seg_en_2
 0_1_0
 1_0_1

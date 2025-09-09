@@ -3,7 +3,7 @@
 // date created: 09/06/2025
 
 // test bench for lab 2 top module, which drives
-// two seven segment displays via time multiplexing
+// two seven segment displays via time multiplexing;
 // the switch inputs for these displays are added, such
 // that the sum is displayed on other LEDs
 

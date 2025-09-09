@@ -3,6 +3,10 @@
 // date created: 09/05/2025
 
 // Lab 2: Multiplexed 7-Segment Display
+// This module powers two seven-segment
+// displays using only one seven_seg
+// module (only seven output pins)
+// by taking advantage of time multiplexing
 
 module top(
     input clk, reset,
@@ -15,7 +19,7 @@ module top(
 );
 
     logic int_osc;
-    logic seven_seg_en;    // seven-segment enable
+    logic seven_seg_en;   // seven-segment enable
     logic [3:0] switch;   // switch input that will be used
 
 	// Internal high-speed oscillator
@@ -27,31 +31,31 @@ module top(
     parameter CLOCK_DIVIDER = 25'd400000;   
 	
 	// counter using high-speed oscillator
-	// always_ff @(posedge int_osc) begin
-    //     if (counter == CLOCK_DIVIDER) begin
-    //         counter <= 0;
-    //         seven_seg_en <= ~seven_seg_en;    // toggle seven-segment enable
-    //     end else begin
-    //         counter <= counter + 1'b1;
-    //     end
-    // end
-
-    // counter using clk
-    // this is only used for modelsim since
-    // questa can't interpret what HSOSC is
-	always_ff @(posedge clk, posedge reset) begin
-        if (reset) begin
-            counter <= 0;
-            seven_seg_en <= 0;    // toggle seven-segment enable
-        end else if (counter == 1'b1) begin
+	always_ff @(posedge int_osc) begin
+        if (counter == CLOCK_DIVIDER) begin
             counter <= 0;
             seven_seg_en <= ~seven_seg_en;    // toggle seven-segment enable
         end else begin
             counter <= counter + 1'b1;
         end
     end
+
+    // counter using clk
+    // this is only used for modelsim since
+    // questa can't interpret what HSOSC is
+	// always_ff @(posedge clk, posedge reset) begin
+    //     if (reset) begin
+    //         counter <= 0;
+    //         seven_seg_en <= 0;    // toggle seven-segment enable
+    //     end else if (counter == 1'b1) begin
+    //         counter <= 0;
+    //         seven_seg_en <= ~seven_seg_en;    // toggle seven-segment enable
+    //     end else begin
+    //         counter <= counter + 1'b1;
+    //     end
+    // end
     
-    // switch mux module to use the right switch inputs
+    // switch mux module to choose the correct switch inputs
     switch_mux sw_mux(
         .s1(s1),
         .s2(s2),

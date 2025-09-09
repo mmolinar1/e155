@@ -2,7 +2,12 @@
 // email: mmolinar@hmc.edu
 // date created: 09/05/2025
 
-// mux to pick between switch inputs
+// Lab 2: Multiplexed 7-Segment Display
+// This module is a mux that 
+// picks between two 4-bit switch inputs
+// and determines which input should be used
+// to drive a seven_segment display based on
+// the display that's enabled
 
 module switch_mux(
 	input logic [3:0] s1,        // switches for display 1
