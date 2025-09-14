@@ -10,8 +10,8 @@
 
 module lab3_mm(
     input clk, reset,
-	input logic [3:0] row,    // switches for display 1
-    output logic [3:0] col,    // switches for display 2, 
+	input logic [3:0] row,
+    output logic [3:0] col,
 	output logic [6:0] seg,
     output logic seven_seg_1,
     output logic seven_seg_2
@@ -19,7 +19,7 @@ module lab3_mm(
 
     logic int_osc;
     logic [3:0] key_digit;
-    logic key_valid;
+    logic valid_key;
     logic [3:0] digit1, digit2;
     logic [3:0] display_digit;
 
@@ -28,10 +28,10 @@ module lab3_mm(
 
     // Keypad FSM to manage scanning and button detection
     keypad_fsm fsm(
-        .clk(clk), .reset(reset),
-        .col(col), .row(row),
+        .clk(int_osc), .reset(reset),
+        .row(row), .col(col),
         .digit(key_digit),
-        .key_valid(key_valid)
+        .valid_key(valid_key)
     );
 
     // displaying the right digit on the correct
@@ -40,7 +40,7 @@ module lab3_mm(
         if (reset) begin
             digit1 <= 4'h0;
             digit2 <= 4'h0;
-        end else if (key_valid) begin
+        end else if (valid_key) begin
             digit1 <= digit2;
             digit2 <= key_digit;
         end
@@ -51,9 +51,9 @@ module lab3_mm(
     // modified lab 2 module to drive a dual
     // seven segment display w/ time multiplexing
     lab2_mm dual_seven_seg(
-        .clk(clk), .reset(reset),
-        .int_osc(int_osc), .digit(display_digit)
-        .seg(seg), .seven_seg_1(seven_seg_1),
+        .clk(int_osc), .reset(reset),
+        .digit(display_digit), .seg(seg),
+        .seven_seg_1(seven_seg_1),
         .seven_seg_2(seven_seg_2)
     );
 

@@ -15,22 +15,17 @@ module keypad_fsm(
     output logic [3:0] digit,
 	output logic valid_key
 );
-
-    logic [3:0] state, nextstate;
+	typedef enum logic [3:0] {IDLE, DEBOUNCE, SYNC, ROW, DRIVE, HOLD} statetype;
+    statetype state, nextstate;
     logic [21:0] debounce_counter;
     logic key_press, key_debounced;
+	logic key_synced;
     logic [3:0] decoded_digit;
-
-    // defining states
-	parameter IDLE = 4'b0000;
-    parameter DEBOUNCE = 4'b0001;
-    parameter SYNC = 4'b0010;
-    parameter ROW = 4'b0011;
-    parameter DRIVE = 4'b0100;
-    parameter HOLD = 4'b0101;
+	
+	parameter DEBOUNCE_DIVIDER = 22'd2400000;
 
     // Key press detection
-    assign key_press = |col;
+    assign key_press = |row;
     
     // Keypad decoder to convert row/col to a digit
     keypad_decoder decoder(
@@ -40,45 +35,57 @@ module keypad_fsm(
     );
 
     debouncer debounce(
-        .clk(clk)
-        .reset(reset)
-        .s_in(key_pressed)
-        .s_out(key_debounced)
-    )
+        .clk(clk),
+        .reset(reset),
+        .s_in(key_press),
+        .s_out(key_debounced),
+		.debounce_counter(debounce_counter)
+    );
+	
+	sync key_sync(
+		.clk(clk),
+		.d(key_debounced),
+		.q(key_synced)
+	);
 
     // State register
-    always_ff @(posedge clk)
-        if (reset) state <= IDLE;
-        else state <= nextstate;
+    always_ff @(posedge clk) begin
+        if (reset) begin
+			state <= IDLE;
+        end else begin
+			state <= nextstate;
+		end
+	end
     
-    // checking all rows
+    // checking all columns
     always_ff @(posedge clk)
         if (reset) begin
-            row <= 4'b0001;
+            col <= 4'b0001;
         end else if (state == IDLE) begin
-            // Rotate active row
-            if (row == 4'b0001) row <= 4'b0010;
-            if (row == 4'b0010) row <= 4'b0100;
-            if (row == 4'b0100) row <= 4'b1000;
-            if (row == 4'b1000) row <= 4'b0001;
+            // Rotate active col
+            if (col == 4'b0001) col <= 4'b0010;
+            if (col == 4'b0010) col <= 4'b0100;
+            if (col == 4'b0100) col <= 4'b1000;
+            if (col == 4'b1000) col <= 4'b0001;
         end
 
     // Next state logic
     always_comb
         case(state)
             IDLE: if(key_press) nextstate = DEBOUNCE;
+                else nextstate = IDLE;
                 
             DEBOUNCE: if(debounce_counter >= DEBOUNCE_DIVIDER) nextstate = SYNC;
 
-            SYNC: if(key_press) nextstate = ROW;
+            SYNC: if(key_synced) nextstate = ROW;
                 else nextstate = IDLE;
 
-            ROW: if(x) nextstate = DRIVE;
+            ROW: if(key_synced) nextstate = DRIVE;
                 else nextstate = IDLE;
 
             DRIVE: nextstate = HOLD;
 
-            HOLD: if(key_press) nextstate = HOLD;
+            HOLD: if(key_synced) nextstate = HOLD;
                 else nextstate = IDLE;
 
             default: nextstate = IDLE;

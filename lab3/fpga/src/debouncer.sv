@@ -11,21 +11,21 @@
 module debouncer (
     input logic clk, reset,
     input logic s_in,
-    output logic s_out
+    output logic s_out,
+	output logic [21:0] debounce_counter
 );
 
     logic stable;
-    logic [21:0] debounce_counter;
-    parameter DEBOUNCE_DIVIDER = 22'd2400000;
+    parameter DEBOUNCE_DIVIDER = 22'd2400000; // make 50 ms
     
     always_ff @(posedge clk)
         if (reset) begin
-            counter <= 0;
+            debounce_counter <= 0;
             stable <= 0;
         end else if (s_in != stable) begin
             if (debounce_counter == DEBOUNCE_DIVIDER) begin
                 stable <= s_in;
-                counter <= 0;
+                debounce_counter <= 0;
             end else debounce_counter <= debounce_counter + 1;
         end else debounce_counter <= 0;
     
