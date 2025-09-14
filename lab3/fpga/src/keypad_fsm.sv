@@ -15,7 +15,7 @@ module keypad_fsm(
     output logic [3:0] digit,
 	output logic valid_key
 );
-	typedef enum logic [3:0] {IDLE, DEBOUNCE, SYNC, ROW, DRIVE, HOLD} statetype;
+	typedef enum logic [2:0] {IDLE, DEBOUNCE, SYNC, ROW, DRIVE, HOLD} statetype;
     statetype state, nextstate;
     logic [21:0] debounce_counter;
     logic key_press, key_debounced;

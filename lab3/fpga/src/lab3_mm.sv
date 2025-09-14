@@ -9,7 +9,7 @@
 // recent entry appears on the right
 
 module lab3_mm(
-    input clk, reset,
+    input reset,
 	input logic [3:0] row,
     output logic [3:0] col,
 	output logic [6:0] seg,
@@ -36,7 +36,7 @@ module lab3_mm(
 
     // displaying the right digit on the correct
     // displays
-    always_ff @(posedge clk)
+    always_ff @(posedge int_osc)
         if (reset) begin
             digit1 <= 4'h0;
             digit2 <= 4'h0;
