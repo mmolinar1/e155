@@ -63,10 +63,14 @@ module keypad_fsm(
             col <= 4'b0001;
         end else if (state == IDLE) begin
             // Rotate active col
-            if (col == 4'b0001) col <= 4'b0010;
-            if (col == 4'b0010) col <= 4'b0100;
-            if (col == 4'b0100) col <= 4'b1000;
-            if (col == 4'b1000) col <= 4'b0001;
+            if (col == 4'b0001)
+				col <= 4'b0010;
+            else if (col == 4'b0010)
+				col <= 4'b0100;
+            else if (col == 4'b0100)
+				col <= 4'b1000;
+            else if (col == 4'b1000)
+				col <= 4'b0001;
         end
 
     // Next state logic
@@ -76,6 +80,7 @@ module keypad_fsm(
                 else nextstate = IDLE;
                 
             DEBOUNCE: if(debounce_counter >= DEBOUNCE_DIVIDER) nextstate = SYNC;
+				else nextstate = DEBOUNCE;
 
             SYNC: if(key_synced) nextstate = ROW;
                 else nextstate = IDLE;

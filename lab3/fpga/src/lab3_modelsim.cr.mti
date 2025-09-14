@@ -1,0 +1,8 @@
+C:/Users/mmolinar/Desktop/e155/lab3/fpga/src/keypad_decoder.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/Desktop/e155/lab3/fpga/src/keypad_decoder.sv
+Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
+-- Compiling module keypad_decoder
+
+Top level modules:
+	keypad_decoder
+
+} {} {}}

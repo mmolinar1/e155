@@ -35,7 +35,7 @@ module keypad_decoder(
             {4'b1000, 4'b0100}: digit = 4'b1111;    // row 3, col 2, F
             {4'b1000, 4'b1000}: digit = 4'b1101;    // row 3, col 3, D
            
-            default digit = digit;
+            default digit = 4'b0000;
         endcase
     end
 

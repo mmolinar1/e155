@@ -16,7 +16,7 @@ module debouncer (
 );
 
     logic stable;
-    parameter DEBOUNCE_DIVIDER = 22'd2400000; // make 50 ms
+    parameter DEBOUNCE_DIVIDER = 22'd2400000;
     
     always_ff @(posedge clk)
         if (reset) begin

@@ -13,9 +13,9 @@ module keypad_decoder_tb();
 
     logic clk, reset;
     logic [3:0] row, col;
-    logic digit, digit_expected;
+    logic [3:0] digit, digit_expected;
     logic [31:0] vectornum, errors;
-    logic [2:0] testvectors[10000:0];
+    logic [11:0] testvectors[10000:0];
 
     keypad_decoder dut(
         .row(row),
@@ -57,7 +57,7 @@ module keypad_decoder_tb();
             // Increment the count of vectors
             vectornum = vectornum + 1;
             // When the test vector becomes all 'x', the test is complete
-            if (testvectors[vectornum] === 4'bx) begin
+            if (testvectors[vectornum] === 12'bx) begin
                 $display("%d tests completed with %d errors", vectornum, errors);
                 // Stop the simulation
                 $stop;

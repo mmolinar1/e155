@@ -1,0 +1,1 @@
+C:/lscc/radiant/2024.2/questasim/win64/VisualizerRls/bin/viscom.exe -nolock -quiet -jmem_size 393216 work.keypad_decoder_tb -quiet -auto_acc_if_foreign -work work +acc -L iCE40UP -Lf iCE40UP -allow_unnamed -o _opt -id 1-00be43eaebb3-68c73a03-aa-3d30 +__design_bin_path+C:/Users/mmolinar/Desktop/e155/lab3/fpga/src +__betafsm
