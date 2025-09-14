@@ -10,59 +10,51 @@
 
 module lab3_mm(
     input clk, reset,
-	input logic [3:0] s1,    // switches for display 1
-    input logic [3:0] s2,    // switches for display 2, 
+	input logic [3:0] row,    // switches for display 1
+    output logic [3:0] col,    // switches for display 2, 
 	output logic [6:0] seg,
     output logic seven_seg_1,
     output logic seven_seg_2
     );
 
     logic int_osc;
-    logic d;
-    logic d_mid;
-    logic q;
-    logic seven_seg_en;   // seven-segment enable
-    logic [3:0] key;   // key input that will be used
-    logic [19:0] debounce_counter;
-    logic key_press;
-    parameter DEBOUNCE_DIVIDER = 20'd0;
+    logic [3:0] key_digit;
+    logic key_valid;
+    logic [3:0] digit1, digit2;
+    logic [3:0] display_digit;
 
     // Internal high-speed oscillator
 	HSOSC hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
 
+    // Keypad FSM to manage scanning and button detection
+    keypad_fsm fsm(
+        .clk(clk), .reset(reset),
+        .col(col), .row(row),
+        .digit(key_digit),
+        .key_valid(key_valid)
+    );
+
+    // displaying the right digit on the correct
+    // displays
+    always_ff @(posedge clk)
+        if (reset) begin
+            digit1 <= 4'h0;
+            digit2 <= 4'h0;
+        end else if (key_valid) begin
+            digit1 <= digit2;
+            digit2 <= key_digit;
+        end
+
+    // display the correct digit
+    assign display_digit = seven_seg_1 ? digit1 : digit2;
+
+    // modified lab 2 module to drive a dual
+    // seven segment display w/ time multiplexing
     lab2_mm dual_seven_seg(
         .clk(clk), .reset(reset),
-        .int_osc(int_osc), .digit(digit)
+        .int_osc(int_osc), .digit(display_digit)
         .seg(seg), .seven_seg_1(seven_seg_1),
         .seven_seg_2(seven_seg_2)
     );
-
-    // synchronizer
-    always_ff @(posedge clk)
-        begin
-            d_mid <= d;
-            q <= d_mid;
-        end
-
-    // checking all rows
-    always_ff @(posedge clk)
-        if (reset) begin
-            row <= 4'b0001;
-        end else if (state == IDLE1) begin
-            // Rotate active row
-            if (row == 4'b0001) row <= 4'b0010;
-            if (row == 4'b0010) row <= 4'b0100;
-            if (row == 4'b0100) row <= 4'b1000;
-            if (row == 4'b1000) row <= 4'b0001;
-        end
-        
-    // debounce counter
-    always_ff @(posedge clk)
-        if (reset || state != DEBOUNCE) debounce_counter <= 20'd0;
-        else if (state == DEBOUNCE && debounce_counter < DEBOUNCE_DIVIDER)
-            debounce_counter <= debounce_counter + 1'b1;
-            
-    // Key press detection
-    assign key_press = |col;
 
 endmodule
