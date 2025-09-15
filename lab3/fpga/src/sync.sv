@@ -5,6 +5,8 @@
 // Lab 3: Keypad Scanner
 // This module is a synchronizer
 // made from two flip-flops
+// this is adopted from Prof. Brake's
+// lecture slides
 
 module sync(
     input logic clk,

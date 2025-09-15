@@ -21,8 +21,12 @@ module keypad_fsm(
     logic key_press, key_debounced;
 	logic key_synced;
     logic [3:0] decoded_digit;
-	
-	parameter DEBOUNCE_DIVIDER = 22'd2400000;
+
+    // actual divider value used in hardware
+	// parameter DEBOUNCE_DIVIDER = 22'd2400000;
+
+    // using a smaller divider so that the simulation doesn't take as long
+    parameter DEBOUNCE_DIVIDER = 22'd100;
 
     // Key press detection
     assign key_press = |row;

@@ -16,16 +16,19 @@ module lab2_mm(
 	input logic [3:0] digit,
 	output logic [6:0] seg,
     output logic seven_seg_1,
-    output logic seven_seg_2
+    output logic seven_seg_2,
+    output logic seven_seg_en    // seven-segment enable
 );
 
-    logic seven_seg_en;   // seven-segment enable
     logic [25:0] counter = 0;    // counter for 400 KHz
     parameter CLOCK_DIVIDER = 25'd400000;   
 
 	// counter using high-speed oscillator
 	always_ff @(posedge clk) begin
-        if (counter == CLOCK_DIVIDER) begin
+        if (reset) begin
+            counter <= 0;
+            seven_seg_en <= 0;
+        end else if (counter == CLOCK_DIVIDER) begin
             counter <= 0;
             seven_seg_en <= ~seven_seg_en;    // toggle seven-segment enable
         end else begin

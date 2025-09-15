@@ -4,7 +4,7 @@
 
 // Lab 3: Keypad Scanner
 // This module tests the keypad decoder
-// module, which decodes switch inputs from
+// module, which decodes key press inputs from
 // the keypad
 
 `timescale 1ps/1ps

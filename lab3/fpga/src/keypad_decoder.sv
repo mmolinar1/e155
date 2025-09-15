@@ -3,8 +3,8 @@
 // date created: 09/11/2025
 
 // Lab 3: Keypad Scanner
-// This module decodes switch inputs
-// from the keypad
+// This module decodes key press inputs
+// from the keypad using rows and columns
 
 module keypad_decoder(
     input  logic [3:0] row,    // Input row
@@ -35,7 +35,7 @@ module keypad_decoder(
             {4'b1000, 4'b0100}: digit = 4'b1111;    // row 3, col 2, F
             {4'b1000, 4'b1000}: digit = 4'b1101;    // row 3, col 3, D
            
-            default digit = 4'b0000;
+            default: digit = 4'b0000;
         endcase
     end
 

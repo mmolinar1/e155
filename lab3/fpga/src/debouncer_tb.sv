@@ -14,7 +14,10 @@ module debouncer_tb();
     logic debounce_counter;
     logic [31:0] errors;
 
-    debouncer dut(
+    // using a smaller divider so that the simulation doesn't take as long
+    parameter TEST_DEBOUNCE_DIVIDER = 22'd100;  
+
+    debouncer #(.DEBOUNCE_DIVIDER(TEST_DEBOUNCE_DIVIDER)) dut(
         .clk(clk), .reset(reset),
         .s_in(s_in), .s_out(s_out),
         .debounce_counter(debounce_counter)
@@ -35,12 +38,43 @@ module debouncer_tb();
         reset = 1; #22;
         reset = 0;
         
-        // first test (debounce divider is 2,400,000)
-        // Set inputs
-        s_in = 1;    
+        // first test - simulating key bouncing
+        s_in = 1; #15;
+        s_in = 0; #15;
+        s_in = 1; #15;
+        s_in = 0; #15;
+        s_in = 1; // Final state is high
         
+        // should still be low until debounce completes
+        assert (s_out !== 0) else begin
+            $error("s_out changed during bouncing"); 
+            errors++;
+        end
+        
+        // wait for the full debounce period
+        #((TEST_DEBOUNCE_DIVIDER + 10) * 10); // 10 time unit period
+        
+        assert (s_out == 1) else begin
+            $error"s_out should be 1 after debounce period");
+            errors++;
+        end
+
+        // second test - checking reset
+        // set input high and wait
+        s_in = 1;
+        #((TEST_DEBOUNCE_DIVIDER + 10) * 10);
+        
+        // apply reset
+        reset = 1; #20;
+        
+        // check that output returns to 0 after reset
+        assert(s_out === 0) else begin
+            $error("s_out not properly reset (s_out = %b)", s_out);
+            errors++;
+        end
+        
+        // stop the simulation
         $display("Tests completed ");
-        // stop the simulation.
         $stop;
     end
 endmodule

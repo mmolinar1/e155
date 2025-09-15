@@ -45,8 +45,8 @@ module lab3_mm(
             digit2 <= key_digit;
         end
 
-    // display the correct digit
-    assign display_digit = seven_seg_1 ? digit1 : digit2;
+    // digit1 is the older entry (left display), digit2 is newest (right display)
+    assign display_digit = seven_seg_en ? digit2 : digit1;
 
     // modified lab 2 module to drive a dual
     // seven segment display w/ time multiplexing
@@ -54,7 +54,8 @@ module lab3_mm(
         .clk(int_osc), .reset(reset),
         .digit(display_digit), .seg(seg),
         .seven_seg_1(seven_seg_1),
-        .seven_seg_2(seven_seg_2)
+        .seven_seg_2(seven_seg_2),
+        .seven_seg_en(seven_seg_en)
     );
 
 endmodule

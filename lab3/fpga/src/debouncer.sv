@@ -5,10 +5,13 @@
 // Lab 3: Keypad Scanner
 // This module debounces the signal
 // from the keypad, which experiences
-// bouncing
+// bouncing due to its physical
+// nature
 
 
-module debouncer (
+module debouncer #(
+    parameter DEBOUNCE_DIVIDER = 22'd2400000  // set to 2,400,000 to divide down to 10 Hz
+)(
     input logic clk, reset,
     input logic s_in,
     output logic s_out,
@@ -16,7 +19,6 @@ module debouncer (
 );
 
     logic stable;
-    parameter DEBOUNCE_DIVIDER = 22'd2400000;
     
     always_ff @(posedge clk)
         if (reset) begin

@@ -1,6 +1,8 @@
 // author: Matthew Molinar
 // email: mmolinar@hmc.edu
 // date created: 09/12/2025
+// test vector used in the keypad_decoder_tb
+// testbench
 
 // row _ col _ digit_expected
 0001_0001_0001
