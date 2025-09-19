@@ -38,7 +38,7 @@ module keypad_fsm(
         .digit(decoded_digit)
     );
 
-    debouncer debounce(
+    debouncer #(DEBOUNCE_DIVIDER) debounce (
         .clk(clk),
         .reset(reset),
         .s_in(key_press),
@@ -89,7 +89,7 @@ module keypad_fsm(
             SYNC: if(key_synced) nextstate = ROW;
                 else nextstate = IDLE;
 
-            ROW: if(key_synced) nextstate = DRIVE;
+            ROW: if(key_press) nextstate = DRIVE;
                 else nextstate = IDLE;
 
             DRIVE: nextstate = HOLD;

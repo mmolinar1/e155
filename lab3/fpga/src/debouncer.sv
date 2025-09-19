@@ -29,7 +29,10 @@ module debouncer #(
                 stable <= s_in;
                 debounce_counter <= 0;
             end else debounce_counter <= debounce_counter + 1;
-        end else debounce_counter <= 0;
+        end else begin 
+            debounce_counter <= 0;
+            stable <= 0;
+        end
     
     assign s_out = stable;
 endmodule

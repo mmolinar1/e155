@@ -9,8 +9,8 @@
 
 module sync_tb();
 
-    logic clk; 
-    logic d, q; 
+    logic clk;
+    logic d, q;
     logic [31:0] errors;
 
     sync dut(
@@ -30,15 +30,50 @@ module sync_tb();
         // Initialize inputs
         d = 0;
         errors = 0;
+
+        #20;
+        assert (q == 0) else begin
+            $error("q didn't start at 0");
+            errors++;
+        end
         
-        // testing with an asynchronous input
+        // first test - testing with an asynchronous input
         #2;
+        d = 1;
 
-        d = 1; #20; // two clk cycles
+        // at 1st clock edge, first ff captures d, but q doesn't
+        @(posedge clk);
+        #1;
+        assert (q == 0) else begin
+            $error("q changed after first clock cycle");
+            errors++;
+        end
+        
+        // at 2nd clock edge, q should now be 1
+        @(posedge clk);
+        #1;
+        assert (q == 1) else begin
+            $error("q didn't update after two clock cycles");
+            errors++;
+        end
 
-        // should still be low until debounce completes
-        assert (q == d) else begin
-            $error("q didn't grab d's value"); 
+        // second test - testing with an asynchronous input, but now doing the inverse
+        #2;
+        d = 0;
+
+        // at 1st clock edge, first ff captures d, but q doesn't
+        @(posedge clk);
+        #1;
+        assert (q == 1) else begin
+            $error("q changed after first clock cycle");
+            errors++;
+        end
+        
+        // at 2nd clock edge, q should now be 1
+        @(posedge clk);
+        #1;
+        assert (q == 0) else begin
+            $error("q didn't update after two clock cycles");
             errors++;
         end
 
