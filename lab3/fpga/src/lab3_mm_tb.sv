@@ -12,9 +12,9 @@
 
 module lab3_mm_tb();
 
-    logic reset;
+    logic clk, reset;
 	logic [3:0] row, col;
-	logic [6:0] seg
+	logic [6:0] seg;
     logic seven_seg_1, seven_seg_2;
     logic [31:0] errors;
 

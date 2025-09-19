@@ -11,7 +11,7 @@ module debouncer_tb();
 
     logic clk, reset; 
     logic s_in, s_out; 
-    logic debounce_counter;
+    logic [21:0] debounce_counter;
     logic [31:0] errors;
 
     // using a smaller divider so that the simulation doesn't take as long
@@ -37,6 +37,11 @@ module debouncer_tb();
 
         reset = 1; #22;
         reset = 0;
+
+        assert (s_out === 0) else begin
+            $error("s_out should be 0 after reset");
+            errors++;
+        end
         
         // first test - simulating key bouncing
         s_in = 1; #15;
@@ -46,16 +51,17 @@ module debouncer_tb();
         s_in = 1; // Final state is high
         
         // should still be low until debounce completes
-        assert (s_out !== 0) else begin
+        #10;
+        assert (s_out === 0) else begin
             $error("s_out changed during bouncing"); 
             errors++;
         end
         
-        // wait for the full debounce period
-        #((TEST_DEBOUNCE_DIVIDER + 10) * 10); // 10 time unit period
+        // wait for more than a full debounce period
+        #((TEST_DEBOUNCE_DIVIDER + 20) * 10); // 10 time unit period
         
         assert (s_out == 1) else begin
-            $error"s_out should be 1 after debounce period");
+            $error("s_out should be 1 after debounce period");
             errors++;
         end
 
@@ -70,6 +76,17 @@ module debouncer_tb();
         // check that output returns to 0 after reset
         assert(s_out === 0) else begin
             $error("s_out not properly reset (s_out = %b)", s_out);
+            errors++;
+        end
+
+        reset = 0;
+
+        // third test - input stays stable
+        s_in = 1; #20;
+        #((TEST_DEBOUNCE_DIVIDER + 20) * 10);
+        
+        assert (s_out === 1) else begin
+            $error("s_out should be 1 after debounced");
             errors++;
         end
         

@@ -18,8 +18,9 @@ module lab3_mm(
     );
 
     logic int_osc;
-    logic [3:0] key_digit;
     logic valid_key;
+    logic seven_seg_en;
+    logic [3:0] key_digit;
     logic [3:0] digit1, digit2;
     logic [3:0] display_digit;
 
