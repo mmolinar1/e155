@@ -30,7 +30,7 @@ module keypad_fsm_tb();
     // Start of test
     initial begin
         // Initialize inputs
-        row = 0;
+        row = 4'b0000;
         errors = 0;
         
         reset = 1; #22;
@@ -43,51 +43,47 @@ module keypad_fsm_tb();
             errors++;
         end
 
-        // testing IDLE > DEBOUNCE
+        // testing IDLE > SYNC
         row = 4'b0001; // key press
-        #50;
-
-        assert(dut.state == dut.DEBOUNCE) else begin
-            $error("Did not transition to DEBOUNCE state after key press"); 
+        @(posedge clk);
+        assert(dut.state == dut.SYNC) else begin
+            $error("Did not transition to SYNC state after key press"); 
             errors++;
         end
 
-        // testing DEBOUNCE stays in DEBOUNCE before it reaches its desired value
-        // each cycle is 10 ps, and DEBOUNCE_DIVIDER is 100 for sim
-        #2000;
-
-        if (dut.debounce_counter < dut.DEBOUNCE_DIVIDER) begin
-            assert(dut.state == dut.DEBOUNCE) else begin
-            $error("Did not stay in DEBOUNCE while counter < divider");
+        // testing SYNC > DEBOUNCE (key_synced should be 1)
+        @(posedge clk);
+        assert(dut.state == dut.DEBOUNCE) else begin
+            $error("Did not go SYNC > DEBOUNCE");
             errors++;
+        end
+
+        // testing if stay in DEBOUNCE
+        #50;
+        if (dut.debounce < dut.DEBOUNCE_DIVIDER) begin
+            assert(dut.state == dut.DEBOUNCE_DIVIDER) else begin
+                $error("Didn't stay in DEBOUNCE");
+                errors++;
             end
         end
 
-        // testing DEBOUNCE > SYNC
-        // wait for counter to reach divider value
-        while (dut.debounce_counter < dut.DEBOUNCE_DIVIDER) #10;
-        #100;
-        assert(dut.state == dut.SYNC) else begin
-            $error("Did not go to SYNC after DEBOUNCE");
-            errors++;
-        end
-
-        // testing SYNC > ROW (key_synced should be 1)
-        #50;
+        // testing DEBOUNCE > ROW
+        while(dut.debounce_counter < dut.DEBOUNCE_DIVIDER) #10;
+        #10;
         assert(dut.state == dut.ROW) else begin
-            $error("Did not go SYNC > ROW");
+            $error("Did not go DEBOUNCE > ROW");
             errors++;
         end
 
         // testing ROW > DRIVE (key_synced should be 1)
-        #50;
+        @(posedge clk);
         assert(dut.state == dut.DRIVE) else begin
             $error("Did not go ROW > DRIVE");
             errors++;
         end
 
         // testing DRIVE > HOLD
-        #50;
+        @(posedge clk);
         assert(dut.state == dut.HOLD) else begin
             $error("Did not go DRIVE > HOLD");
             errors++;

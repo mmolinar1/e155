@@ -18,8 +18,8 @@ module keypad_fsm(
 	typedef enum logic [2:0] {IDLE, DEBOUNCE, SYNC, ROW, DRIVE, HOLD} statetype;
     statetype state, nextstate;
     logic [21:0] debounce_counter;
-    logic key_press, key_debounced;
-	logic key_synced;
+    logic key_press, key_synced;
+    logic count_done;
     logic [3:0] decoded_digit;
 
     // actual divider value used in hardware
@@ -38,19 +38,18 @@ module keypad_fsm(
         .digit(decoded_digit)
     );
 
+    sync key_sync(
+		.clk(clk),
+		.d(key_press),
+		.q(key_synced)
+	);
+
     debouncer #(DEBOUNCE_DIVIDER) debounce (
         .clk(clk),
         .reset(reset),
-        .s_in(key_press),
-        .s_out(key_debounced),
+        .count_done(count_done)
 		.debounce_counter(debounce_counter)
     );
-	
-	sync key_sync(
-		.clk(clk),
-		.d(key_debounced),
-		.q(key_synced)
-	);
 
     // State register
     always_ff @(posedge clk) begin
@@ -80,16 +79,16 @@ module keypad_fsm(
     // Next state logic
     always_comb
         case(state)
-            IDLE: if(key_press) nextstate = DEBOUNCE;
+            IDLE: if(key_press) nextstate = SYNC;
+                else nextstate = IDLE;
+
+            SYNC: if(key_synced) nextstate = DEBOUNCE;
                 else nextstate = IDLE;
                 
-            DEBOUNCE: if(debounce_counter >= DEBOUNCE_DIVIDER) nextstate = SYNC;
+            DEBOUNCE: if(count_done) nextstate = ROW;
 				else nextstate = DEBOUNCE;
 
-            SYNC: if(key_synced) nextstate = ROW;
-                else nextstate = IDLE;
-
-            ROW: if(key_press) nextstate = DRIVE;
+            ROW: if(key_synced) nextstate = DRIVE; // might have to be key_press?
                 else nextstate = IDLE;
 
             DRIVE: nextstate = HOLD;

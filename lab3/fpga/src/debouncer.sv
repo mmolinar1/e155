@@ -13,26 +13,20 @@ module debouncer #(
     parameter DEBOUNCE_DIVIDER = 22'd2400000  // set to 2,400,000 to divide down to 10 Hz
 )(
     input logic clk, reset,
-    input logic s_in,
-    output logic s_out,
+    output logic count_done,
 	output logic [21:0] debounce_counter
 );
-
-    logic stable;
     
     always_ff @(posedge clk)
         if (reset) begin
             debounce_counter <= 0;
-            stable <= 0;
-        end else if (s_in != stable) begin
-            if (debounce_counter == DEBOUNCE_DIVIDER) begin
-                stable <= s_in;
-                debounce_counter <= 0;
-            end else debounce_counter <= debounce_counter + 1;
-        end else begin 
+            count_done <= 0;
+        end else if (debounce_counter >= DEBOUNCE_DIVIDER - 1) begin
+            count_done<= 1;
             debounce_counter <= 0;
-            stable <= 0;
+        end else begin 
+            count_done <= 0;
+            debounce_counter <= debounce_counter + 1;
         end
-    
-    assign s_out = stable;
+
 endmodule
