@@ -60,7 +60,7 @@ module keypad_fsm_tb();
 
         // testing if stay in DEBOUNCE
         #50;
-        if (dut.debounce < dut.DEBOUNCE_DIVIDER) begin
+        if (dut.debounce_counter < dut.DEBOUNCE_DIVIDER) begin
             assert(dut.state == dut.DEBOUNCE_DIVIDER) else begin
                 $error("Didn't stay in DEBOUNCE");
                 errors++;

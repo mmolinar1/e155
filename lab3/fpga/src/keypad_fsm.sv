@@ -44,10 +44,10 @@ module keypad_fsm(
 		.q(key_synced)
 	);
 
-    debouncer #(DEBOUNCE_DIVIDER) debounce (
+    debouncer #(DEBOUNCE_DIVIDER) debounce(
         .clk(clk),
         .reset(reset),
-        .count_done(count_done)
+        .count_done(count_done),
 		.debounce_counter(debounce_counter)
     );
 

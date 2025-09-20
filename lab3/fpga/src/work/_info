@@ -23,6 +23,10 @@ R0
 R1
 R0
 R1
+R0
+R1
+R0
+R1
 !s12c _opt1
 R1
 Z2 !s12c _opt
@@ -68,10 +72,10 @@ n@_opt1
 R10
 R3
 T_opt2
-!s110 1758324012
-VReR7NLnHO99dI3dNgZE]M0
+!s110 1758391966
+VOL::<L9OHRa5HLgVK32d71
 04 13 4 work keypad_fsm_tb fast 0
-=22-00be43eaec35-68cde52c-247-4a24
+=1-00be43eaec35-68ceee9d-3d4-39c8
 R1
 !s12f OEM25U5 
 R5
@@ -84,23 +88,23 @@ R10
 vdebouncer
 2C:/Users/mmolinar/e155-lab1/lab3/fpga/src/debouncer.sv
 Z11 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z12 !s110 1758324009
+Z12 !s110 1758391953
 !i10b 1
-!s100 Q:Mm@LhWdXmzQA2_ODmn80
-IzPJ9mGgziSXD]1[d65Z;X0
+!s100 Te7Y[agMgHiLlciW5LnM61
+Io[iSdJKiLaOBY=HSNaG`g2
 S1
 Z13 dC:/Users/mmolinar/e155-lab1/lab3/fpga/src
-w1758324003
+w1758390780
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/debouncer.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/debouncer.sv
-!i122 228
-L0 12 27
+!i122 303
+L0 12 21
 Z14 VDg1SIo80bB@j0V0VzS_@n1
 Z15 OL;L;2024.2;79
 r1
 !s85 0
 31
-Z16 !s108 1758324009.000000
+Z16 !s108 1758391953.000000
 !s107 C:/Users/mmolinar/e155-lab1/lab3/fpga/src/debouncer.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab3/fpga/src/debouncer.sv|
 !i113 0
@@ -118,7 +122,7 @@ R13
 w1758306936
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/debouncer_tb.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/debouncer_tb.sv
-!i122 229
+!i122 304
 L0 10 88
 R14
 R15
@@ -143,7 +147,7 @@ R13
 Z18 w1758304099
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/display_gate.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/display_gate.sv
-!i122 230
+!i122 305
 L0 10 11
 R14
 R15
@@ -168,7 +172,7 @@ R13
 R18
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_decoder.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_decoder.sv
-!i122 231
+!i122 306
 L0 9 34
 R14
 R15
@@ -193,7 +197,7 @@ R13
 R18
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_decoder_tb.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_decoder_tb.sv
-!i122 232
+!i122 307
 L0 12 57
 R14
 R15
@@ -211,15 +215,15 @@ vkeypad_fsm
 R11
 R12
 !i10b 1
-!s100 K<a3AXm_Z1@e6Z6ngcAN70
-I;_;adLo=V75a`@PMJbR=d1
+!s100 R2i8<bWW>IEFdZS8b<DiO1
+IEbcVIc6:oe<8]ECKAjC:Z0
 S1
 R13
-w1758323890
+w1758391839
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_fsm.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_fsm.sv
-!i122 233
-L0 11 97
+!i122 308
+L0 11 96
 R14
 R15
 r1
@@ -236,15 +240,15 @@ vkeypad_fsm_tb
 R11
 R12
 !i10b 1
-!s100 Gjhh4Hjfjlk^ZO>_B`>]70
-IZLA?mHbmRPVNno62Egg393
+!s100 :N?I5@9IKk=?lP]dTe`DX2
+IEg92C6fMoh^Um_ioN3gA?0
 S1
 R13
-w1758322472
+w1758391948
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_fsm_tb.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_fsm_tb.sv
-!i122 234
-L0 11 130
+!i122 309
+L0 11 126
 R14
 R15
 r1
@@ -259,7 +263,7 @@ R9
 vlab2_mm
 2C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab2_mm.sv
 R11
-Z19 !s110 1758324010
+R12
 !i10b 1
 !s100 @n;IKRL7DbhZMA8mokW6@3
 I=j83^7dQjL@?_fLT5l9XD1
@@ -268,14 +272,14 @@ R13
 R18
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab2_mm.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab2_mm.sv
-!i122 235
+!i122 310
 L0 14 36
 R14
 R15
 r1
 !s85 0
 31
-Z20 !s108 1758324010.000000
+R16
 !s107 C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab2_mm.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab2_mm.sv|
 !i113 0
@@ -284,7 +288,7 @@ R9
 vlab3_mm
 2C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm.sv
 R11
-R19
+Z19 !s110 1758391954
 !i10b 1
 !s100 7D_0U6h7VSjgB85@EZ1;M2
 IKF?4o;73:oE0WC`4KA20o0
@@ -293,14 +297,14 @@ R13
 w1758305834
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm.sv
-!i122 236
+!i122 311
 L0 11 52
 R14
 R15
 r1
 !s85 0
 31
-R20
+R16
 !s107 C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm.sv|
 !i113 0
@@ -318,14 +322,14 @@ R13
 w1758305756
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm_tb.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm_tb.sv
-!i122 237
+!i122 312
 L0 13 106
 R14
 R15
 r1
 !s85 0
 31
-R20
+Z20 !s108 1758391954.000000
 !s107 C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm_tb.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm_tb.sv|
 !i113 0
@@ -343,7 +347,7 @@ R13
 R18
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/seven_seg.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/seven_seg.sv
-!i122 238
+!i122 313
 L0 11 26
 R14
 R15
@@ -368,7 +372,7 @@ R13
 R18
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/sync.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/sync.sv
-!i122 239
+!i122 314
 L0 11 13
 R14
 R15
@@ -393,7 +397,7 @@ R13
 w1758308947
 8C:/Users/mmolinar/e155-lab1/lab3/fpga/src/sync_tb.sv
 FC:/Users/mmolinar/e155-lab1/lab3/fpga/src/sync_tb.sv
-!i122 240
+!i122 315
 L0 10 75
 R14
 R15
