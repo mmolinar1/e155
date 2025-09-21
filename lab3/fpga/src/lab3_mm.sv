@@ -19,18 +19,29 @@ module lab3_mm(
 
     logic int_osc;
     logic valid_key;
+    logic key_press;
     logic seven_seg_en;
     logic [3:0] key_digit;
+    logic [3:0] key_synced;
     logic [3:0] digit1, digit2;
     logic [3:0] display_digit;
 
     // Internal high-speed oscillator
 	HSOSC hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
 
+    // Key press detection
+    assign key_press = |row;
+
+    sync key_sync(
+		.clk(int_osc),
+		.d(key_press),
+		.q(key_synced)
+	);
+
     // Keypad FSM to manage scanning and button detection
     keypad_fsm fsm(
         .clk(int_osc), .reset(reset),
-        .row(row), .col(col),
+        .key_synced(key_synced), .col(col),
         .digit(key_digit),
         .valid_key(valid_key)
     );
@@ -49,7 +60,7 @@ module lab3_mm(
     // digit1 is the older entry (left display), digit2 is newest (right display)
     assign display_digit = seven_seg_en ? digit2 : digit1;
 
-    // modified lab 2 module to drive a dual
+    // lab 2 module to drive a dual
     // seven segment display w/ time multiplexing
     lab2_mm dual_seven_seg(
         .clk(int_osc), .reset(reset),

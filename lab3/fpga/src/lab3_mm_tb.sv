@@ -104,7 +104,7 @@ module lab3_mm_tb();
         end
 
         // wait a long time to see int_osc toggle
-        #100000;
+        #10000;
 
         // stop the simulation
         if (errors == 0)

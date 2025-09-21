@@ -10,7 +10,7 @@
 
 module keypad_fsm(
 	input logic clk, reset,
-    input logic [3:0] row,
+    input logic [3:0] key_synced,
     output logic [3:0] col,
     output logic [3:0] digit,
 	output logic valid_key
@@ -18,35 +18,26 @@ module keypad_fsm(
 	typedef enum logic [2:0] {IDLE, DEBOUNCE, SYNC, ROW, DRIVE, HOLD} statetype;
     statetype state, nextstate;
     logic [21:0] debounce_counter;
-    logic key_press, key_synced;
-    logic count_done;
+    logic count_done, reset_count;
     logic [3:0] decoded_digit;
 
     // actual divider value used in hardware
 	// parameter DEBOUNCE_DIVIDER = 22'd2400000;
 
     // using a smaller divider so that the simulation doesn't take as long
-    parameter DEBOUNCE_DIVIDER = 22'd100;
-
-    // Key press detection
-    assign key_press = |row;
+    parameter DEBOUNCE_DIVIDER = 22'd50;
     
     // Keypad decoder to convert row/col to a digit
     keypad_decoder decoder(
-        .row(row),
+        .row(key_synced),
         .col(col),
         .digit(decoded_digit)
     );
 
-    sync key_sync(
-		.clk(clk),
-		.d(key_press),
-		.q(key_synced)
-	);
-
     debouncer #(DEBOUNCE_DIVIDER) debounce(
         .clk(clk),
         .reset(reset),
+        .reset_count(reset_count),
         .count_done(count_done),
 		.debounce_counter(debounce_counter)
     );
@@ -76,24 +67,29 @@ module keypad_fsm(
 				col <= 4'b0001;
         end
 
+    always_comb begin
+        case(state)
+            SYNC: reset_count <= 1;
+            DEBOUNCE: reset_count <= 0;
+            default: reset_count = 0;
+        endcase
+    end
+
     // Next state logic
     always_comb
         case(state)
-            IDLE: if(key_press) nextstate = SYNC;
-                else nextstate = IDLE;
-
-            SYNC: if(key_synced) nextstate = DEBOUNCE;
+            IDLE: if(|key_synced) nextstate = DEBOUNCE;
                 else nextstate = IDLE;
                 
             DEBOUNCE: if(count_done) nextstate = ROW;
 				else nextstate = DEBOUNCE;
 
-            ROW: if(key_synced) nextstate = DRIVE; // might have to be key_press?
+            ROW: if(|key_synced) nextstate = DRIVE;
                 else nextstate = IDLE;
 
             DRIVE: nextstate = HOLD;
 
-            HOLD: if(key_synced) nextstate = HOLD;
+            HOLD: if(|key_synced) nextstate = HOLD;
                 else nextstate = IDLE;
 
             default: nextstate = IDLE;

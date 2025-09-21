@@ -6,18 +6,18 @@
 // the FSM logic driving the dual 
 // seven_segment display
 
-`timescale 1ps/1ps
+`timescale 1ns/1ns
 
 module keypad_fsm_tb();
 
     logic clk, reset;
-    logic [3:0] row, col, digit;
+    logic [3:0] key_synced, col, digit;
     logic valid_key;
     logic [31:0] errors;
 
     keypad_fsm dut(
         .clk(clk), .reset(reset),
-        .row(row), .col(col), .digit(digit),
+        .key_synced(key_synced), .col(col), .digit(digit),
         .valid_key(valid_key)
     );
 
@@ -30,7 +30,7 @@ module keypad_fsm_tb();
     // Start of test
     initial begin
         // Initialize inputs
-        row = 4'b0000;
+        key_synced = 4'b0000;
         errors = 0;
         
         reset = 1; #22;
@@ -43,49 +43,44 @@ module keypad_fsm_tb();
             errors++;
         end
 
-        // testing IDLE > SYNC
-        row = 4'b0001; // key press
-        @(posedge clk);
-        assert(dut.state == dut.SYNC) else begin
-            $error("Did not transition to SYNC state after key press"); 
-            errors++;
-        end
-
-        // testing SYNC > DEBOUNCE (key_synced should be 1)
-        @(posedge clk);
+        // testing IDLE to DEBOUNCE
+        key_synced = 4'b0001; // key press
+        #20;
         assert(dut.state == dut.DEBOUNCE) else begin
-            $error("Did not go SYNC > DEBOUNCE");
+            $error("Did not transition to DEBOUNCE after key press"); 
             errors++;
         end
 
         // testing if stay in DEBOUNCE
-        #50;
+        #20;
         if (dut.debounce_counter < dut.DEBOUNCE_DIVIDER) begin
-            assert(dut.state == dut.DEBOUNCE_DIVIDER) else begin
+            assert(dut.state == dut.DEBOUNCE) else begin
                 $error("Didn't stay in DEBOUNCE");
                 errors++;
             end
         end
 
-        // testing DEBOUNCE > ROW
-        while(dut.debounce_counter < dut.DEBOUNCE_DIVIDER) #10;
-        #10;
+        // testing DEBOUNCE to ROW
+        while(!dut.count_done) begin
+            #10;
+        end
+        #10; 
         assert(dut.state == dut.ROW) else begin
-            $error("Did not go DEBOUNCE > ROW");
+            $error("Did not go DEBOUNCE to ROW");
             errors++;
         end
 
-        // testing ROW > DRIVE (key_synced should be 1)
-        @(posedge clk);
+        // testing ROW to DRIVE (key_synced should be 1)
+        #10;
         assert(dut.state == dut.DRIVE) else begin
-            $error("Did not go ROW > DRIVE");
+            $error("Did not go ROW to DRIVE");
             errors++;
         end
 
-        // testing DRIVE > HOLD
-        @(posedge clk);
+        // testing DRIVE to HOLD
+        #10;
         assert(dut.state == dut.HOLD) else begin
-            $error("Did not go DRIVE > HOLD");
+            $error("Did not go DRIVE to HOLD");
             errors++;
         end
 
@@ -96,29 +91,32 @@ module keypad_fsm_tb();
             errors++;
         end
 
-        // testing HOLD > IDLE when key is no longer pressed
-        #10;
-        row = 4'b0000;
-        #20;
+        // testing HOLD to IDLE when key is no longer pressed
+        #10
+        key_synced = 4'b0000;
+        #30;
+
         assert(dut.state == dut.IDLE) else begin
-            $error("Did not got HOLD > IDLE once key is released");
+            $error("Did not got HOLD to IDLE once key is released");
             errors++;
         end
 
         // testing that valid_key is 1 in DRIVE and 0 after
+        #10;
+        key_synced = 4'b0010;
+        #10;
 
-        #50;
-        row = 4'b0010;
-
-        while (dut.state != dut.DRIVE) #10;
+        while (dut.state != dut.DRIVE) begin
+            #10;
+        end
 
         assert(valid_key == 1) else begin
             $error("valid_key is not 1 in DRIVE state");
             errors++;
         end
 
-        #50;
         // should be in HOLD state here
+        #10;
         assert(dut.state == dut.HOLD && valid_key == 0) else begin
             $error("valid_key is 1 in HOLD or we didn't reach the HOLD state after DRIVE");
             errors++;
