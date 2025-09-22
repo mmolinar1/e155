@@ -15,11 +15,21 @@ module keypad_fsm(
     output logic [3:0] digit,
 	output logic valid_key
 );
-	typedef enum logic [2:0] {IDLE, DEBOUNCE, SYNC, ROW, DRIVE, HOLD} statetype;
-    statetype state, nextstate;
+	// typedef enum logic [2:0] {IDLE, DEBOUNCE, ROW, DRIVE, HOLD} statetype;
+    // statetype state, nextstate;
     logic [21:0] debounce_counter;
-    logic count_done, reset_count;
-    logic [3:0] decoded_digit;
+    logic count_done, reset_count, cycle;
+    logic [3:0] decoded_digit, col_cycle;
+	
+	typedef enum logic [2:0] {
+		IDLE = 3'b000, 
+		DEBOUNCE = 3'b001, 
+		ROW = 3'b011, 
+		DRIVE = 3'b100, 
+		HOLD = 3'b101
+	} statetype;
+	
+	statetype state, nextstate;
 
     // actual divider value used in hardware
 	parameter DEBOUNCE_DIVIDER = 22'd2400000;
@@ -47,28 +57,50 @@ module keypad_fsm(
 			state <= nextstate;
 		end
 	end
-    
-    // checking all columns
-    always_ff @(posedge clk)
-        if (reset) begin
-            col <= 4'b0001;
-        end else if (state == IDLE) begin
-            // Rotate active col
-            if (col == 4'b0001)
-				col <= 4'b0010;
-            else if (col == 4'b0010)
-				col <= 4'b0100;
-            else if (col == 4'b0100)
-				col <= 4'b1000;
-            else if (col == 4'b1000)
-				col <= 4'b0001;
-        end
+	
+	always_ff @(posedge clk) begin
+		if (reset == 0) begin
+			col_cycle <= 0;
+		end else if (cycle) begin
+			col_cycle <= col_cycle + 4'b1;
+		end else col_cycle <= col_cycle;
+	end
+	
+	always_comb begin
+		case(col_cycle)
+			0: col <= 4'b0001;
+			1: col <= 4'b0001;
+			2: col <= 4'b0001;
+			3: col <= 4'b0001;
+			4: col <= 4'b0010;
+			5: col <= 4'b0010;
+			6: col <= 4'b0010;
+			7: col <= 4'b0010;
+			8: col <= 4'b0100;
+			9: col <= 4'b0100;
+			10: col <= 4'b0100;
+			11: col <= 4'b0100;
+			12: col <= 4'b1000;
+			13: col <= 4'b1000;
+			14: col <= 4'b1000;
+			15: col <= 4'b1000;
+		endcase
+	end
 
     always_comb begin
         case(state)
-            SYNC: reset_count <= 1;
-            DEBOUNCE: reset_count <= 0;
-            default: reset_count <= 0;
+            IDLE: begin
+				reset_count = 1;
+				cycle = 1;
+			end
+            DEBOUNCE: begin
+				reset_count = 0;
+				cycle = 0;
+			end
+            default: begin
+				reset_count = 0; 
+				cycle = 0;
+			end
         endcase
     end
 

@@ -29,7 +29,7 @@ module debouncer #(
             debounce_counter <= 0;
         end else begin 
             count_done <= 0;
-            debounce_counter <= debounce_counter + 1;
+            debounce_counter <= debounce_counter + 1'b1;
         end
 
 endmodule

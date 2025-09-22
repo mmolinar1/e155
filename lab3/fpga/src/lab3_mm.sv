@@ -29,12 +29,9 @@ module lab3_mm(
     // Internal high-speed oscillator
 	HSOSC hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
 
-    // Key press detection
-    assign key_press = |row;
-
     sync key_sync(
 		.clk(int_osc),
-		.d(key_press),
+		.d(row),
 		.q(key_synced)
 	);
 
