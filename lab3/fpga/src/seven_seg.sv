@@ -30,7 +30,7 @@ module seven_seg(
             4'hD: seg = 7'b0100001;  // B C D E G
             4'hE: seg = 7'b0000110;  // A F G E D
             4'hF: seg = 7'b0001110;  // A F G E
-            default: seg = 7'b1111111;
+            default: seg = 7'b0000000;
         endcase
     end
 endmodule
