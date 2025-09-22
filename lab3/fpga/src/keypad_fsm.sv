@@ -22,10 +22,7 @@ module keypad_fsm(
     logic [3:0] decoded_digit;
 
     // actual divider value used in hardware
-	// parameter DEBOUNCE_DIVIDER = 22'd2400000;
-
-    // using a smaller divider so that the simulation doesn't take as long
-    parameter DEBOUNCE_DIVIDER = 22'd50;
+	parameter DEBOUNCE_DIVIDER = 22'd2400000;
     
     // Keypad decoder to convert row/col to a digit
     keypad_decoder decoder(
@@ -71,7 +68,7 @@ module keypad_fsm(
         case(state)
             SYNC: reset_count <= 1;
             DEBOUNCE: reset_count <= 0;
-            default: reset_count = 0;
+            default: reset_count <= 0;
         endcase
     end
 

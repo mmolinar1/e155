@@ -9,17 +9,18 @@
 
 module debouncer_tb();
 
-    logic clk, reset; 
-    logic s_in, s_out; 
+    logic clk, reset;
+    logic reset_count;
+    logic count_done;
     logic [21:0] debounce_counter;
     logic [31:0] errors;
 
     // using a smaller divider so that the simulation doesn't take as long
-    parameter TEST_DEBOUNCE_DIVIDER = 22'd100;  
+    parameter TEST_DEBOUNCE_DIVIDER = 22'd50;  
 
     debouncer #(.DEBOUNCE_DIVIDER(TEST_DEBOUNCE_DIVIDER)) dut(
         .clk(clk), .reset(reset),
-        .s_in(s_in), .s_out(s_out),
+        .reset_count(reset_count), .count_done(count_done),
         .debounce_counter(debounce_counter)
     );
 
@@ -32,61 +33,49 @@ module debouncer_tb();
     // Start of test
     initial begin
         // Initialize inputs
-        s_in = 0;
+        reset_count = 0;
         errors = 0;
 
         reset = 1; #22;
         reset = 0;
-
-        assert (s_out === 0) else begin
-            $error("s_out should be 0 after reset");
-            errors++;
-        end
         
-        // first test - simulating key bouncing
-        s_in = 1; #15;
-        s_in = 0; #15;
-        s_in = 1; #15;
-        s_in = 0; #15;
-        s_in = 1; // Final state is high
-        
-        // should still be low until debounce completes
-        #10;
-        assert (s_out === 0) else begin
-            $error("s_out changed during bouncing"); 
-            errors++;
-        end
-        
+        // should be set to 1 after reaching the divider val
         // wait for more than a full debounce period
-        #((TEST_DEBOUNCE_DIVIDER + 20) * 10); // 10 time unit period
-        
-        assert (s_out == 1) else begin
-            $error("s_out should be 1 after debounce period");
+        #((TEST_DEBOUNCE_DIVIDER) * 10); // 10 time unit period
+        assert (count_done === 1) else begin
+            $error("count_done is not 1 after counting up"); 
             errors++;
         end
 
-        // second test - checking reset
-        // set input high and wait
-        s_in = 1;
-        #((TEST_DEBOUNCE_DIVIDER + 10) * 10);
-        
-        // apply reset
-        reset = 1; #20;
-        
-        // check that output returns to 0 after reset
-        assert(s_out === 0) else begin
-            $error("s_out not properly reset (s_out = %b)", s_out);
+        // count_done should be 0 on the next cycle
+        #10;
+        assert (count_done === 0) else begin
+            $error("count_done is not 0 a clk cycle after finishing the count"); 
             errors++;
         end
 
+        // testing reset_count
+        #50;
+        reset_count = 1; #10;
+
+        assert (debounce_counter === 0) else begin
+            $error("debounce counter did not reset properly"); 
+            errors++;
+        end
+
+        reset_count = 0; #10;
+        
+        assert (debounce_counter !== 0) else begin
+            $error("debounce counter did begin counting after reset"); 
+            errors++;
+        end
+
+        // testing reset
+        reset = 1; #22;
         reset = 0;
 
-        // third test - input stays stable
-        s_in = 1; #20;
-        #((TEST_DEBOUNCE_DIVIDER + 20) * 10);
-        
-        assert (s_out === 1) else begin
-            $error("s_out should be 1 after debounced");
+        assert (debounce_counter === 0 && count_done === 0) else begin
+            $error("debounce_counter or count_done did not reset to 0");
             errors++;
         end
         
