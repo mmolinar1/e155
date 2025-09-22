@@ -8,15 +8,17 @@
 // dual seven-segment display - the most
 // recent entry appears on the right
 
-`timescale 1ps/1ps
+`timescale 1ns/1ns
 
 module lab3_mm_tb();
 
     logic clk, reset;
-	logic [3:0] row, col;
+	tri [3:0] row, col;
 	logic [6:0] seg;
     logic seven_seg_1, seven_seg_2;
-    logic [31:0] errors;
+
+    logic [3:0][3:0] keys;
+    logic [3:0] expected_digit1, expected_digit2;
 
     lab3_mm dut(
         .reset(reset),
@@ -25,94 +27,63 @@ module lab3_mm_tb();
         .seven_seg_2(seven_seg_2)
     );
 
-    logic int_osc_clk = dut.int_osc;
+    // ensures rows = 4'b1111 when no key is pressed
+    pulldown(row[0]);
+    pulldown(row[1]);
+    pulldown(row[2]);
+    pulldown(row[3]);
 
-    // Generate clock: 10 time units period (5 high, 5 low)
-    always begin
-        clk = 1; #5;
-        clk = 0; #5;
-    end
+    // keypad model using tranif
+    genvar r, c;
+    generate
+        for (r = 0; r < 4; r++) begin : row_loop
+            for (c = 0; c < 4; c++) begin : col_loop
+                // when keys[r][c] == 1, connect cols[c] <-> rows[r]
+                tranif1 key_switch(row[r], col[c], keys[r][c]);
+            end
+        end
+    endgenerate
+
+    // task to check expected values for the digits
+    task check_key(input [3:0] expected_digit1, expected_digit2, string msg);
+        #1500;
+        
+        assert (dut.digit1 == expected_digit1 && dut.digit2 == expected_digit2)
+            $display("PASSED!: %s -- got digit1=%h digit2=%h expected digit1=%h digit2=%h at time %0t.", 
+                    msg, dut.digit1, dut.digit2, expected_digit1, expected_digit2, $time);
+        else
+            $error("FAILED!: %s -- got digit1=%h digit2=%h expected digit1=%h digit2=%h at time %0t.", 
+                   msg, dut.digit1, dut.digit2, expected_digit1, expected_digit2, $time);
+            
+        #50;
+    endtask
 
     // Start of test
     initial begin
         // Initialize inputs
-        row = 4'b0000;
-        errors = 0;
-        
-        reset = 1; #22;
         reset = 0;
 
-        // test first key press with "pressing" the number 1 : row 0, col 0
-        row = 4'b0001;
-        wait(dut.col == 4'b0001); // waiting for 1st col check
+        keys = '{default:0};
 
-        wait(dut.valid_key);
-        #20;
-        wait(!dut.valid_key); // once valid_key is 0, it means that we're in the hold state
+        #22; reset = 1;
+        
+        // press key at row=1, col=2
+        #50; keys[1][2] = 1;
+        check_key(4'h0, 4'h6, "First key press");
 
-        // testing that digit 2 is holding the value 1
-        assert(dut.digit2 == 4'b0001) else begin
-            $error("Digit 2 is not 1");
-            errors++;
-        end
+        // release button
+        keys[1][2] = 0;
+        #50;
 
-        // testing that digit 1 is still 0
-        assert(dut.digit1 == 4'b0000) else begin
-            $error("Digit 1 is not 0");
-            errors++;
-        end
+        // press another key at row=0, col=0
+        keys[2][3] = 1;
+        check_key(4'h6, 4'hc, "Second key press");
 
-        // release key and make sure it goes to other display after new key-press
-        row = 4'b0000;
-        #100;
+        // release buttons
+        #100; keys = '{default:0};
 
-        // test second key press with "pressing" the number 5 : row 1, col 1
-        row = 4'b0010; // row 1
-        wait(dut.col == 4'b0010); // col 1
-
-        wait(dut.valid_key);
-        #20;
-        wait(!dut.valid_key) // once valid_key is 0, it means that we're in the hold state
-
-        // testing that digit 1 is now 1
-        assert(dut.digit1 == 4'b0001) else begin
-            $error("Digit 1 is not 1");
-            errors++;
-        end
-
-        // testing that digit 2 is now 5
-        assert(dut.digit1 == 4'b0101) else begin
-            $error("Digit 2 is not 5");
-            errors++;
-        end
-
-        // release key
-        row = 4'b0000;
-        #100;
-
-        //testing display mux
-        if (dut.seven_seg_en == 1) begin
-            assert(dut.dsiplay_digit == dut.digit2) else begin
-                $error("when seven_seg_en is high, display_digit should be digit2");
-                errors++;
-            end 
-        end else if (dut.seven_seg_en == 0) begin
-            assert(dut.dsiplay_digit == dut.digitq) else begin
-                $error("when seven_seg_en is low, display_digit should be digit1");
-                errors++;
-            end
-        end
-
-        // wait a long time to see int_osc toggle
-        #10000;
-
-        // stop the simulation
-        if (errors == 0)
-            $display("All tests passed");
-        else
-            $display("%d tests failed", errors);
-
-        $display("Tests completed ");
+        #100; $stop;
+        $display("Tests completed");
         $stop;
     end
 endmodule

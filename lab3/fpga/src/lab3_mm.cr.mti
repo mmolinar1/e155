@@ -54,26 +54,19 @@ Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
 Top level modules:
 	sync
 
-} {} {}} C:/Users/mmolinar/e155-lab1/lab3/fpga/src/display_gate.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/e155-lab1/lab3/fpga/src/display_gate.sv
-Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
--- Compiling module display_gate
-
-Top level modules:
-	display_gate
-
-} {} {}} C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm_tb.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/e155-lab1/lab3/fpga/src/lab3_mm_tb.sv
-Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
--- Compiling module lab3_mm_tb
-
-Top level modules:
-	lab3_mm_tb
-
 } {} {}} C:/Users/mmolinar/e155-lab1/lab3/fpga/src/sync_tb.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/e155-lab1/lab3/fpga/src/sync_tb.sv
 Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
 -- Compiling module sync_tb
 
 Top level modules:
 	sync_tb
+
+} {} {}} C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_fsm.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_fsm.sv
+Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
+-- Compiling module keypad_fsm
+
+Top level modules:
+	keypad_fsm
 
 } {} {}} C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_decoder.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_decoder.sv
 Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024

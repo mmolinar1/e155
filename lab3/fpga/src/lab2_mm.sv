@@ -25,7 +25,7 @@ module lab2_mm(
 
 	// counter using high-speed oscillator
 	always_ff @(posedge clk) begin
-        if (reset) begin
+        if (~reset) begin
             counter <= 0;
             seven_seg_en <= 0;
         end else if (counter == CLOCK_DIVIDER) begin
@@ -35,13 +35,11 @@ module lab2_mm(
             counter <= counter + 1'b1;
         end
     end
-
-    // display gate module to turn on the correct display
-    display_gate disp_gate(
-        .seven_seg_en(seven_seg_en),
-        .seven_seg_1(seven_seg_1),
-        .seven_seg_2(seven_seg_2)
-    );
+	
+    // turn on the right display
+	
+	assign seven_seg_1 = seven_seg_en; //display 1
+    assign seven_seg_2 = ~seven_seg_en; // display 2
 
     // seven segment module to drive a seven-segment module
 	seven_seg sevseg(.s(digit), .seg(seg));

@@ -32,7 +32,10 @@ module keypad_fsm(
 	statetype state, nextstate;
 
     // actual divider value used in hardware
-	parameter DEBOUNCE_DIVIDER = 22'd2400000;
+	// parameter DEBOUNCE_DIVIDER = 22'd2400000;
+
+	// divider value used in sim
+	parameter DEBOUNCE_DIVIDER = 22'd50;
     
     // Keypad decoder to convert row/col to a digit
     keypad_decoder decoder(
@@ -51,15 +54,15 @@ module keypad_fsm(
 
     // State register
     always_ff @(posedge clk) begin
-        if (reset) begin
+        if (~reset) begin
 			state <= IDLE;
         end else begin
-			state <= nextstate;
+			state <= nextstate;			
 		end
 	end
 	
 	always_ff @(posedge clk) begin
-		if (reset == 0) begin
+		if (~reset) begin
 			col_cycle <= 0;
 		end else if (cycle) begin
 			col_cycle <= col_cycle + 4'b1;
@@ -84,22 +87,42 @@ module keypad_fsm(
 			13: col <= 4'b1000;
 			14: col <= 4'b1000;
 			15: col <= 4'b1000;
+			default: col <= 4'b0001;
 		endcase
 	end
-
+	
+	// logic for control signals
     always_comb begin
         case(state)
             IDLE: begin
 				reset_count = 1;
 				cycle = 1;
+				valid_key = 0;
 			end
             DEBOUNCE: begin
 				reset_count = 0;
 				cycle = 0;
+				valid_key = 0;
+			end
+			ROW: begin
+				reset_count = 0;
+				cycle = 0;
+				valid_key = 0;
+			end
+			DRIVE: begin
+				reset_count = 0;
+				cycle = 0;
+				valid_key = 1;
+			end
+			HOLD: begin
+				reset_count = 0;
+				cycle = 0;
+				valid_key = 0;
 			end
             default: begin
-				reset_count = 0; 
+				reset_count = 1; 
 				cycle = 0;
+				valid_key = 0;
 			end
         endcase
     end
@@ -123,9 +146,8 @@ module keypad_fsm(
 
             default: nextstate = IDLE;
         endcase
-
+		
     // Output logic
     assign digit = decoded_digit;
-    assign valid_key = (state == DRIVE);
 
 endmodule

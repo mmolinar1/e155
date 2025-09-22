@@ -19,7 +19,7 @@ module debouncer #(
 );
     
     always_ff @(posedge clk)
-        if (reset) begin
+        if (~reset) begin
             debounce_counter <= 0;
             count_done <= 0;
         end else if (reset_count) begin

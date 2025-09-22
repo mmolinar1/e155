@@ -46,7 +46,7 @@ module lab3_mm(
     // displaying the right digit on the correct
     // displays
     always_ff @(posedge int_osc)
-        if (reset) begin
+        if (~reset) begin
             digit1 <= 4'h0;
             digit2 <= 4'h0;
         end else if (valid_key) begin
