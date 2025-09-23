@@ -36,8 +36,8 @@ module debouncer_tb();
         reset_count = 0;
         errors = 0;
 
-        reset = 1; #22;
-        reset = 0;
+        reset = 0; #22;
+        reset = 1;
         
         // should be set to 1 after reaching the divider val
         // wait for more than a full debounce period

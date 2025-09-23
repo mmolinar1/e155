@@ -10,7 +10,7 @@
 module sync_tb();
 
     logic clk;
-    logic d, q;
+    logic [3:0] d, q;
     logic [31:0] errors;
 
     sync dut(

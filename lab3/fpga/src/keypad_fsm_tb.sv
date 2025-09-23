@@ -33,8 +33,8 @@ module keypad_fsm_tb();
         key_synced = 4'b0000;
         errors = 0;
         
-        reset = 1; #22;
-        reset = 0;
+        reset = 0; #22;
+        reset = 1;
 
         // testing IDLE state after reset
         #20;

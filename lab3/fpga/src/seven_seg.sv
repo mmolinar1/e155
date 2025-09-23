@@ -4,7 +4,7 @@
 
 // Lab 2: Multiplexed 7-Segment Display
 // This module houses logic for taking in
-// a 4-bit switch input and outputs the
+// a 4-bit digit input and outputs the
 // proper hex digit on a 7-segment display
 // seg[0]=A, seg[1]=B, seg[2]=C, seg[3]=D, seg[4]=E, seg[5]=F, seg[6]=G
 

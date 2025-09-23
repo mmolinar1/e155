@@ -10,7 +10,7 @@
 
 
 module debouncer #(
-    parameter DEBOUNCE_DIVIDER = 22'd48000  // set to 2,400,000 to divide down to 10 Hz
+    parameter DEBOUNCE_DIVIDER = 22'd48000
 )(
     input logic clk, reset,
     input logic reset_count,
