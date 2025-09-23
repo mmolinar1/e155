@@ -12,6 +12,13 @@ Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
 Top level modules:
 	debouncer
 
+} {} {}} C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_fsm_tb.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_fsm_tb.sv
+Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
+-- Compiling module keypad_fsm_tb
+
+Top level modules:
+	keypad_fsm_tb
+
 } {} {}} C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_decoder_tb.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/e155-lab1/lab3/fpga/src/keypad_decoder_tb.sv
 Questa Lattice OEM Edition-64 vlog 2024.2 Compiler 2024.05 May 20 2024
 -- Compiling module keypad_decoder_tb
