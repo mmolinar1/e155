@@ -203,37 +203,37 @@ int main(void) {
   configureFlash();
   configureClock();    // PLL
 
-  //RCC->AHB2ENR |= (1 << 0);   // gpioa clk
-  //RCC->APB2ENR |= (1 << 16); // TIM15
-  //RCC->APB2ENR |= (1 << 17); // TIM16  
-  //pinMode(6,GPIO_ALT); // GPIO config in ALT
+  RCC->AHB2ENR |= (1 << 0);  // gpioa clk
+  RCC->APB2ENR |= (1 << 16); // TIM15
+  RCC->APB2ENR |= (1 << 17); // TIM16
 
-  GPIO->AFRL &= ~(0b1111 << 24); 
-  // set the 4 bits to 1110 (14) for AF14
-  GPIO->AFRL |= (14 << 24); 
+  TIM15_init(5);       // Initialize TIM15 with prescaler=5
+  TIM16_init(700);     // Initialize TIM16 with prescaler=700
 
+  //pinMode(6,2);     // GPIO PA6 config in ALT
 
-  //TIM15_init(5);       // Initialize TIM15 with prescaler=5
-  //TIM16_init(700);     // Initialize TIM16 with prescaler=700
+  //GPIO->AFRL &= ~(0b1111 << 24); 
+  //// set the 4 bits to 1110 (14) for AF14
+  //GPIO->AFRL |= (14 << 24); 
 
-  //// play song
-  //int i = 0;
-  //while(notes[i][0] != 0 || notes[i][1] != 0) {
-  //  int freq = notes[i][0];
-  //  int dur = notes[i][1];
+  // play song
+  int i = 0;
+  while(notes[i][0] != 0 || notes[i][1] != 0) {
+    int freq = notes[i][0];
+    int dur = notes[i][1];
 
-  //  if (freq > 0) {
-  //    TIM15_set_frequency(freq);
-  //    TIM16_set_duration(dur);
-  //  } else {
-  //    // silence
-  //    TIM15->CCER &= ~1;          // disable output
-  //    TIM16_set_duration(dur);
-  //    TIM15->CCER |= 1;           // enable output
-  //    }
+    if (freq > 0) {
+      TIM15_set_frequency(freq);
+      TIM16_set_duration(dur);
+    } else {
+      // silence
+      TIM15->CCER &= ~1;          // disable output
+      TIM16_set_duration(dur);
+      TIM15->CCER |= 1;           // enable output
+      }
 
-  //    i++;
-  //}
-  //// stop timer
-  //TIM15->CR1 &= ~1; 
+      i++;
+  }
+  // stop timer
+  TIM15->CR1 &= ~1; 
 }
