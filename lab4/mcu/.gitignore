@@ -1,0 +1,9 @@
+# Segger Embedded Studio
+# Lattice Radiant files
+# Mac OS files
+.DS_Store
+
+**/Output/
+**/Debug/
+*.emSession
+*.jlink
