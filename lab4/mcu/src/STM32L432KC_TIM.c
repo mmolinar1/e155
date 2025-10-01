@@ -58,7 +58,6 @@ void TIM15_set_frequency(uint32_t hz) {
     TIM15->CR1 |= 1;
 }
 
-
 /* Made these functions based on upcounting mode (see reference manual) */
 
 static uint32_t tim16_prescaler = 700;
