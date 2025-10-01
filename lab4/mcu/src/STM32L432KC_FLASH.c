@@ -1,5 +1,12 @@
-// STM32L432KC_FLASH.c
-// Source code for FLASH functions
+/*
+author: Matthew Molinar
+email: mmolinar@hmc.edu
+date created: 09/27/2025
+file: STM32L432KC_FLASH.c
+
+Source code for FLASH functions - from
+course GitHub
+*/
 
 #include "STM32L432KC_FLASH.h"
 

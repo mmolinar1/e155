@@ -1,6 +1,12 @@
-// Adapted from Prof. Brake
-// STM32L432KC_RCC.h
-// Header for RCC functions
+/*
+author: Matthew Molinar
+email: mmolinar@hmc.edu
+date created: 09/27/2025
+file: STM32L432KC_RCC.h
+
+Header for RCC functions - from
+course GitHub
+*/
 
 #ifndef STM32L4_RCC_H
 #define STM32L4_RCC_H

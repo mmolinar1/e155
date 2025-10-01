@@ -1,5 +1,13 @@
-// STM32L432KC_FLASH.h
-// Header for FLASH functions
+/*
+author: Matthew Molinar
+email: mmolinar@hmc.edu
+date created: 09/27/2025
+file: STM32L432KC_FLASH.h
+
+Header for FLASH functions - from
+course GitHub
+*/
+
 
 #ifndef STM32L4_FLASH_H
 #define STM32L4_FLASH_H

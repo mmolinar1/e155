@@ -1,5 +1,12 @@
-// STM32L432KC_GPIO.h
-// Header for GPIO functions
+/*
+author: Matthew Molinar
+email: mmolinar@hmc.edu
+date created: 09/27/2025
+file: STM32L432KC_GPIO.h
+
+Header for GPIO functions - modified
+code from course GitHub
+*/
 
 #ifndef STM32L4_GPIO_H
 #define STM32L4_GPIO_H
