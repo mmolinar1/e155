@@ -12,6 +12,8 @@ main header filer with custom defines
 
 #include "STM32L432KC.h"
 #include <stm32l432xx.h>
+#include "stm32l4xx.h"
+#include "encoder.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Custom defines
