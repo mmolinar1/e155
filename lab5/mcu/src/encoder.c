@@ -6,11 +6,13 @@ file: main.c
 
 */
 
+#include "encoder.h"
 #include "main.h"
+
 
 static volatile int32_t encoder_count = 0;
 static volatile uint32_t last_interrupt_time = 0; // for velocity calculation
-static volatile int32_t velocity = 0; // current velocity (counts per second)
+static volatile int32_t velocity = 0;
 static volatile int8_t direction = 0; // direction: 1 for forward, -1 for backward, 0 for stopped
 
 
@@ -43,9 +45,21 @@ void exit_a_handler(void) {
         // If so, clear the interrupt (NB: Write 1 to reset.)
         EXTI->PR1 |= (1 << gpioPinOffset(PIN_A));
 
-        // Then toggle the LED
-        togglePin(PIN_A);
+        // Read current state of both pins
+        uint32_t a_state = digitalRead(PIN_A);
+        uint32_t b_state = digitalRead(PIN_B);
 
+        // determine rotation direction
+        if(a_state == b_state) {
+            encoder_count++;
+            direction = 1;
+        } else {
+            encoder_count--;
+            direction = -1;
+        }
+
+        // for RPM
+        pulse_count++;
     }
 }
 
@@ -55,9 +69,21 @@ void exit_b_handler(void) {
         // If so, clear the interrupt (NB: Write 1 to reset.)
         EXTI->PR1 |= (1 << gpioPinOffset(PIN_B));
 
-        // Then toggle the LED
-        togglePin(PIN_B);
+        // Read current state of both pins
+        uint32_t a_state = digitalRead(PIN_A);
+        uint32_t b_state = digitalRead(PIN_B);
 
+        // determine rotation direction
+        if(a_state != b_state) {
+            encoder_count++;
+            direction = 1;
+        } else {
+            encoder_count--;
+            direction = -1;
+        }
+        
+        // for RPM
+        pulse_count++;
     }
 }
 
@@ -65,4 +91,4 @@ void exit_b_handler(void) {
 uint32_t encoder_get_count(void) { return encoder_count; }
 void encoder_reset(void) { encoder_count = 0; }
 int32_t encoder_get_velocity(void) { return velocity * direction; }
-int8_t encoder_get_direction(void) { return direction; }
+int32_t encoder_get_direction(void) { return direction; }

@@ -19,7 +19,7 @@ int main(void) {
     // PIN_A
     // 1. Configure mask bit
     EXTI->IMR1 |= (1 << gpioPinOffset(PIN_A)); // Configure the mask bit
-    // 2. Disable rising edge trigger
+    // 2. Enable rising edge trigger
     EXTI->RTSR1 |= (1 << gpioPinOffset(PIN_A));// Enable rising edge trigger
     // 3. Enable falling edge trigger
     EXTI->FTSR1 |= (1 << gpioPinOffset(PIN_A));// Enable falling edge trigger
@@ -29,7 +29,7 @@ int main(void) {
     // PIN_B
     // 1. Configure mask bit
     EXTI->IMR1 |= (1 << gpioPinOffset(PIN_B)); // Configure the mask bit
-    // 2. Disable rising edge trigger
+    // 2. Enable rising edge trigger
     EXTI->RTSR1 |= (1 << gpioPinOffset(PIN_B));// Enable rising edge trigger
     // 3. Enable falling edge trigger
     EXTI->FTSR1 |= (1 << gpioPinOffset(PIN_B));// Enable falling edge trigger
@@ -38,6 +38,24 @@ int main(void) {
 
     while(1){   
         delay_millis(TIM2, 1000);    // check every second (1 Hz)
+
+        // Get current encoder count
+        int32_t curr_count = encoder_get_count();
+        int32_t pulse_diff = curr_count - prev_count;
+        prev_count = curr_count;
+        
+        // Get direction
+        int32_t dir = encoder_get_direction();
+
+        // Calculate rotations per second
+        // For a quadrature encoder with 408 PPR, we get 4x counts per revolution
+        rps = (float)pulse_diff / (4 * 408);
+
+        // velocity - speed and direction
+        velocity = rps * dir;     
+        
+        // Display results
+        printf("Rev/s: %.2f", velocity);
     }
 
 }
