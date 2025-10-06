@@ -4,6 +4,8 @@ email: mmolinar@hmc.edu
 date created: 10/03/2025
 file: main.c
 
+uses two interrupts to calculate speed in revolutions per second
+and the direction in which a motor is spinning
 */
 
 #include "main.h"

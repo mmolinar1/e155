@@ -2,8 +2,9 @@
 author: Matthew Molinar
 email: mmolinar@hmc.edu
 date created: 10/04/2025
-file: main.c
+file: encoder.h 
 
+Header file for encoder functions
 */
 
 #ifndef ENCODER_H

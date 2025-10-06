@@ -3,6 +3,9 @@ author: Matthew Molinar
 email: mmolinar@hmc.edu
 date created: 10/03/2025
 file: encoder.c
+
+Contains encoder initialization function,
+interrupt handlers and direction logic
 */
 #include "encoder.h"
 #include "main.h"
