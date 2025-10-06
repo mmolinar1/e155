@@ -13,7 +13,6 @@ file: main.c
 
 // Global variables declarations
 extern volatile int32_t encoder_count;
-extern volatile int32_t direction; // direction: 1 for forward, -1 for backward, 0 for stopped
 
 void encoder_init(void);         // sets up pins + interrupts
 
