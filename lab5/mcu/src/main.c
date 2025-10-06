@@ -45,7 +45,7 @@ int main(void) {
         // Calculate rotations per second
         // 408 PPR, and get 4x counts per revolution
         float rps;
-        rps = (float)curr_count / (4 * 408 * 2);
+        rps = (float)curr_count / (4 * 408);
         
         // Display results
         printf("Rev/s: %.2f\n", rps);

@@ -51,8 +51,8 @@ void EXTI1_IRQHandler(void) {
         uint32_t a_state = digitalRead(PIN_A);
         uint32_t b_state = digitalRead(PIN_B);
 
-        // If a changed and == b_state, CCW
-        // If a changed and != b_state, CW
+        // If a_state == b_state, CCW
+        // If a_state != b_state, CW
         if (a_state == prev_b_state) {
             encoder_count--; // CCW
         } else {
@@ -73,12 +73,13 @@ void EXTI2_IRQHandler(void) {
         // Read current state of both pins
         uint32_t a_state = digitalRead(PIN_A);
         uint32_t b_state = digitalRead(PIN_B);
-        
-        // Only counting in PIN_A interrupt handler to avoid double counting
+
+        // If a_state != b_state, CCW
+        // If a_state == b_state, CW 
         if (a_state != prev_b_state) {
-            encoder_count++; // CCW
+            encoder_count--; // CCW
         } else {
-            encoder_count--; // CW
+            encoder_count++; // CW
         }
         prev_b_state = b_state;
     }
