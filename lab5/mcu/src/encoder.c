@@ -5,16 +5,12 @@ date created: 10/03/2025
 file: main.c
 
 */
-
 #include "encoder.h"
 #include "main.h"
 
-
-static volatile int32_t encoder_count = 0;
-static volatile uint32_t last_interrupt_time = 0; // for velocity calculation
-static volatile int32_t velocity = 0;
-static volatile int8_t direction = 0; // direction: 1 for forward, -1 for backward, 0 for stopped
-
+// Global variable definitions
+volatile int32_t encoder_count = 0;
+volatile int32_t direction = 0; // direction: 1 for forward, -1 for backward, 0 for stopped
 
 // Initialization function
 void encoder_init(void) {
@@ -39,7 +35,7 @@ void encoder_init(void) {
 }
 
 // Interrupt Handlers
-void exit_a_handler(void) {
+void EXTI1_IRQHandler(void) {
 // Check that the button was what triggered our interrupt
     if (EXTI->PR1 & (1 << gpioPinOffset(PIN_A))){
         // If so, clear the interrupt (NB: Write 1 to reset.)
@@ -50,20 +46,17 @@ void exit_a_handler(void) {
         uint32_t b_state = digitalRead(PIN_B);
 
         // determine rotation direction
-        if(a_state == b_state) {
+        if(a_state != b_state) {    // CW
             encoder_count++;
             direction = 1;
-        } else {
+        } else {                    // CCW
             encoder_count--;
             direction = -1;
         }
-
-        // for RPM
-        pulse_count++;
     }
 }
 
-void exit_b_handler(void) {
+void EXTI2_IRQHandler(void) {
 // Check that the button was what triggered our interrupt
     if (EXTI->PR1 & (1 << gpioPinOffset(PIN_B))){
         // If so, clear the interrupt (NB: Write 1 to reset.)
@@ -74,21 +67,12 @@ void exit_b_handler(void) {
         uint32_t b_state = digitalRead(PIN_B);
 
         // determine rotation direction
-        if(a_state != b_state) {
+        if(a_state == b_state) {    // CW
             encoder_count++;
             direction = 1;
-        } else {
+        } else {                    // CCW
             encoder_count--;
             direction = -1;
         }
-        
-        // for RPM
-        pulse_count++;
     }
 }
-
-// get and reset count functions
-uint32_t encoder_get_count(void) { return encoder_count; }
-void encoder_reset(void) { encoder_count = 0; }
-int32_t encoder_get_velocity(void) { return velocity * direction; }
-int32_t encoder_get_direction(void) { return direction; }

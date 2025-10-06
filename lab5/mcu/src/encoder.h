@@ -11,10 +11,10 @@ file: main.c
 
 #include <stdint.h>
 
+// Global variables declarations
+extern volatile int32_t encoder_count;
+extern volatile int32_t direction; // direction: 1 for forward, -1 for backward, 0 for stopped
+
 void encoder_init(void);         // sets up pins + interrupts
-uint32_t encoder_get_count(void);  // returns current position
-void encoder_reset(void);        // reset count to 0
-int32_t encoder_get_velocity(void);
-int32_t encoder_get_direction(void); 
 
 #endif

@@ -7,6 +7,7 @@ file: main.c
 */
 
 #include "main.h"
+#include "encoder.h"
 
 int main(void) {
     
@@ -36,26 +37,21 @@ int main(void) {
     // 4. Turn on EXTI interrupt in NVIC_ISER
     NVIC->ISER[0] |= (1 << EXTI1_IRQn);
 
-    while(1){   
+    while(1){
+        int32_t curr_count = encoder_count; 
+        encoder_count = 0;  
         delay_millis(TIM2, 1000);    // check every second (1 Hz)
 
-        // Get current encoder count
-        int32_t curr_count = encoder_get_count();
-        int32_t pulse_diff = curr_count - prev_count;
-        prev_count = curr_count;
-        
-        // Get direction
-        int32_t dir = encoder_get_direction();
-
         // Calculate rotations per second
-        // For a quadrature encoder with 408 PPR, we get 4x counts per revolution
-        rps = (float)pulse_diff / (4 * 408);
+        // 408 PPR, and get 4x counts per revolution
+        float rps;
+        rps = (float)curr_count / (4 * 408);
 
         // velocity - speed and direction
-        velocity = rps * dir;     
+        float velocity;
+        velocity = rps * direction;     
         
         // Display results
-        printf("Rev/s: %.2f", velocity);
+        printf("Rev/s: %.2f\n", velocity);
     }
-
 }
