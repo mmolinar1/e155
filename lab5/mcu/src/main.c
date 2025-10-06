@@ -40,9 +40,9 @@ int main(void) {
     while(1){
         int32_t curr_count = encoder_count; 
         encoder_count = 0;  
-        delay_millis(TIM2, 1000);    // check every second (1 Hz)
+        delay_millis(TIM2, 500);    // check every half second
 
-        // Calculate rotations per second
+        // Calculate rotations per second 
         // 408 PPR, and get 4x counts per revolution
         float rps;
         rps = (float)curr_count / (4 * 408);

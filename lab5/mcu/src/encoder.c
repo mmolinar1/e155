@@ -9,8 +9,6 @@ file: encoder.c
 
 // Global variable definitions
 volatile int32_t encoder_count = 0;
-volatile uint8_t prev_a_state = 0;
-volatile uint8_t prev_b_state = 0;
 
 // Initialization function
 void encoder_init(void) {
@@ -34,10 +32,6 @@ void encoder_init(void) {
     // 2. Configure EXTICR for the input button interrupt
     SYSCFG->EXTICR[0] |= _VAL2FLD(SYSCFG_EXTICR1_EXTI1, 0b000); // Select PA1
     SYSCFG->EXTICR[0] |= _VAL2FLD(SYSCFG_EXTICR1_EXTI2, 0b000); // Select PA2
-    
-    // Store initial states
-    prev_a_state = digitalRead(PIN_A);
-    prev_b_state = digitalRead(PIN_B);
 }
 
 // Interrupt Handlers
@@ -53,14 +47,11 @@ void EXTI1_IRQHandler(void) {
 
         // If a_state == b_state, CCW
         // If a_state != b_state, CW
-        if (a_state == prev_b_state) {
+        if (a_state == b_state) {
             encoder_count--; // CCW
         } else {
             encoder_count++; // CW
         }
-        
-        // Update previous states
-        prev_a_state = a_state;
     }
 }
 
@@ -76,11 +67,10 @@ void EXTI2_IRQHandler(void) {
 
         // If a_state != b_state, CCW
         // If a_state == b_state, CW 
-        if (a_state != prev_b_state) {
+        if (a_state != b_state) {
             encoder_count--; // CCW
         } else {
             encoder_count++; // CW
         }
-        prev_b_state = b_state;
     }
 }
