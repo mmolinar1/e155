@@ -25,7 +25,7 @@ int main(void) {
     // 3. Enable falling edge trigger
     EXTI->FTSR1 |= (1 << gpioPinOffset(PIN_A));// Enable falling edge trigger
     // 4. Turn on EXTI interrupt in NVIC_ISER
-    NVIC->ISER[0] |= (1 << EXTI2_IRQn);
+    NVIC->ISER[0] |= (1 << EXTI1_IRQn);
 
     // PIN_B
     // 1. Configure mask bit
@@ -35,7 +35,7 @@ int main(void) {
     // 3. Enable falling edge trigger
     EXTI->FTSR1 |= (1 << gpioPinOffset(PIN_B));// Enable falling edge trigger
     // 4. Turn on EXTI interrupt in NVIC_ISER
-    NVIC->ISER[0] |= (1 << EXTI1_IRQn);
+    NVIC->ISER[0] |= (1 << EXTI2_IRQn);
 
     while(1){
         int32_t curr_count = encoder_count; 
