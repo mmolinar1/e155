@@ -77,3 +77,41 @@ void EXTI2_IRQHandler(void) {
         }
     }
 }
+
+
+// interrupt test (interrupt vs. polling)
+//#include "main.h"
+
+//volatile int32_t b_pin_val = 0;
+
+//// Initialization function
+//void encoder_init(void) {
+//    // Enable GPIOA clock
+//    gpioEnable(GPIO_PORT_A);
+
+//    // Configure PIN_A (PA1) as an input
+//    pinMode(PIN_A, GPIO_INPUT);
+//    GPIOA->PUPDR |= _VAL2FLD(GPIO_PUPDR_PUPD1, 0b10);
+
+//    // Configure PIN_B (PA2) as an output
+//    pinMode(PIN_B, GPIO_OUTPUT);
+
+//    // Initialize timer
+//    RCC->APB1ENR1 |= RCC_APB1ENR1_TIM2EN;
+//    initTIM(DELAY_TIM);
+
+//    // Enable SYSCFG clock and map PA1 to the EXTI1 interrupt line
+//    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+//    SYSCFG->EXTICR[0] |= _VAL2FLD(SYSCFG_EXTICR1_EXTI1, 0b000); // Select PA1 for EXTI1
+//}
+
+//void EXTI1_IRQHandler(void) {
+//    if (EXTI->PR1 & (1 << gpioPinOffset(PIN_A))){
+        
+//        EXTI->PR1 |= (1 << gpioPinOffset(PIN_A));
+
+//        b_pin_val = !b_pin_val;
+//        digitalWrite(PIN_B, b_pin_val);
+//    }
+//}
+
