@@ -10,7 +10,7 @@
 
 #include "STM32L432KC.h"
 
-#define LED_PIN PB3 // LED pin for blinking on Port B pin 3
+#define LED_PIN PA2 // LED pin for blinking on Port A pin 2
 #define BUFF_LEN 32
 
 #endif // MAIN_H

@@ -30,4 +30,9 @@ void initSPI(int br, int cpol, int cpha);
  *    -- return: the character received over SPI */
 char spiSendReceive(char send);
 
+#define SPI_SCK PB3
+#define SPI_MISO PB4
+#define SPI_MOSI PB5
+#define SPI_CE PA4
+
 #endif

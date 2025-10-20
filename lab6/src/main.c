@@ -78,89 +78,129 @@ void update_resolution(char request[])
 // Solution Functions
 /////////////////////////////////////////////////////////////////
 
+//int main(void) {
+//  configureFlash();
+//  configureClock();
+
+//  gpioEnable(GPIO_PORT_A);
+//  gpioEnable(GPIO_PORT_B);
+//  gpioEnable(GPIO_PORT_C);
+
+//  pinMode(PB3, GPIO_OUTPUT);
+  
+//  RCC->APB2ENR |= (RCC_APB2ENR_TIM15EN);
+//  initTIM(TIM15);
+  
+//  USART_TypeDef * USART = initUSART(USART1_ID, 125000);
+
+//  // SPI initialization (mode 1)
+//  initSPI(0b000, 0, 1);
+
+//  // Sensor Initialization
+//  initDS1722(RES_8_BIT);
+
+//  while(1) {
+//    /* Wait for ESP8266 to send a request.
+//    Requests take the form of '/REQ:<tag>\n', with TAG begin <= 10 characters.
+//    Therefore the request[] array must be able to contain 18 characters.
+//    */
+
+//    // Receive web request from the ESP
+//    char request[BUFF_LEN] = "                  "; // initialize to known value
+//    int charIndex = 0;
+  
+//    // Keep going until you get end of line character
+//    while(inString(request, "\n") == -1) {
+//      // Wait for a complete request to be transmitted before processing
+//      while(!(USART->ISR & USART_ISR_RXNE));
+//      request[charIndex++] = readChar(USART);
+//    }
+
+//    // update the bit resolution
+//    update_resolution(request);
+
+//    // Reading tempertaure
+//    float current_temp = readTemp();
+//    char temp_str[32];
+//    sprintf(temp_str, "%.2f", current_temp);  // format temp as string
+  
+//    // Update string with current LED state
+//    int led_status = updateLEDStatus(request);
+
+//    char ledStatusStr[20];
+//    if (led_status == 1)
+//      sprintf(ledStatusStr,"LED is on!");
+//    else if (led_status == 0)
+//      sprintf(ledStatusStr,"LED is off!");
+
+//    // Get Resolution status
+//    uint8_t current_res = get_resolution();
+//    char res_status_str[30];
+//    sprintf(res_status_str, "Current Resolution: %d-bit", current_res);
+
+//    // finally, transmit the webpage over UART
+//    sendString(USART, webpageStart); // webpage header code
+//    sendString(USART, ledStr); // button for controlling LED
+
+//    // LED
+//    sendString(USART, "<h2>LED Status</h2>");
+//    sendString(USART, "<p>");
+//    sendString(USART, ledStatusStr);
+//    sendString(USART, "</p>");
+
+//    // TEMP
+//    sendString(USART, "<h2>Temperature</h2>");
+//    sendString(USART, "<p>");
+//    sendString(USART, temp_str);
+//    sendString(USART, " &deg;C</p>");
+
+//    // BIT RES
+//    sendString(USART, res_str); // Send the buttons
+//    sendString(USART, "<h2>Bit Resolution Status</h2>");
+//    sendString(USART, "<p>");
+//    sendString(USART, res_status_str); // Send the current status
+//    sendString(USART, "</p>");
+
+//    sendString(USART, webpageEnd);
+//  }
+//}
+
+/////////////////////////////////////////////////////////////////
+// Testing SPI Transaction
+/////////////////////////////////////////////////////////////////
+
 int main(void) {
-  configureFlash();
-  configureClock();
+    configureFlash();
+    configureClock();
 
-  gpioEnable(GPIO_PORT_A);
-  gpioEnable(GPIO_PORT_B);
-  gpioEnable(GPIO_PORT_C);
-
-  pinMode(PB3, GPIO_OUTPUT);
+    gpioEnable(GPIO_PORT_A);
+    gpioEnable(GPIO_PORT_B);
+    initTIM(TIM15);
   
-  RCC->APB2ENR |= (RCC_APB2ENR_TIM15EN);
-  initTIM(TIM15);
-  
-  USART_TypeDef * USART = initUSART(USART1_ID, 125000);
+    // Initialize SPI w a slow baud rate
+    initSPI(0b111, 0, 0);
 
-  // SPI initialization (mode 1)
-  initSPI(0b000, 0, 1);
+    char message[] = "Matthew";
+    int message_len = 7;
 
-  // Sensor Initialization
-  initDS1722(RES_8_BIT);
+    // transmit the message repeatedly
+    while(1) {
+        
+        //  Chip Enable (CE)
+        digitalWrite(SPI_CE, PIO_LOW);
 
-  while(1) {
-    /* Wait for ESP8266 to send a request.
-    Requests take the form of '/REQ:<tag>\n', with TAG begin <= 10 characters.
-    Therefore the request[] array must be able to contain 18 characters.
-    */
+        delay_millis(TIM15, 200);
 
-    // Receive web request from the ESP
-    char request[BUFF_LEN] = "                  "; // initialize to known value
-    int charIndex = 0;
-  
-    // Keep going until you get end of line character
-    while(inString(request, "\n") == -1) {
-      // Wait for a complete request to be transmitted before processing
-      while(!(USART->ISR & USART_ISR_RXNE));
-      request[charIndex++] = readChar(USART);
+        // Loop through the message and send each character
+        for (int i = 0; i < message_len; i++) {
+            // Send one byte and ignore the received byte
+            spiSendReceive(message[i]);
+            delay_millis(TIM15, 200); 
+        }
+
+        // deselect
+        digitalWrite(SPI_CE, PIO_HIGH);
+        delay_millis(TIM15, 250); 
     }
-
-    // update the bit resolution
-    update_resolution(request);
-
-    // Reading tempertaure
-    float current_temp = readTemp();
-    char temp_str[32];
-    sprintf(temp_str, "%.2f", current_temp)  // format temp as string
-  
-    // Update string with current LED state
-    int led_status = updateLEDStatus(request);
-
-    char ledStatusStr[20];
-    if (led_status == 1)
-      sprintf(ledStatusStr,"LED is on!");
-    else if (led_status == 0)
-      sprintf(ledStatusStr,"LED is off!");
-
-    // Get Resolution status
-    uint8_t current_res = get_resolution();
-    char res_status_str[30];
-    sprintf(res_status_str, "Current Resolution: %d-bit", current_res);
-
-    // finally, transmit the webpage over UART
-    sendString(USART, webpageStart); // webpage header code
-    sendString(USART, ledStr); // button for controlling LED
-
-    // LED
-    sendString(USART, "<h2>LED Status</h2>");
-    sendString(USART, "<p>");
-    sendString(USART, ledStatusStr);
-    sendString(USART, "</p>");
-
-    // TEMP
-    sendString(USART, "<h2>Temperature</h2>");
-    sendString(USART, "<p>");
-    sendString(USART, temp_str);
-    sendString(USART, " &deg;C</p>");
-
-    // BIT RES
-    sendString(USART, res_str); // Send the buttons
-    sendString(USART, "<h2>Bit Resolution Status</h2>");
-    sendString(USART, "<p>");
-    sendString(USART, res_status_str); // Send the current status
-    sendString(USART, "</p>");
-
-    sendString(USART, webpageEnd);
-  }
 }
+
