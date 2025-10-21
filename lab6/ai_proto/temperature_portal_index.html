@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Temperature Sensor Portal</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1320; --accent:#60a5fa; --muted:#94a3b8; --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;color:#e6eef8;background:linear-gradient(180deg,#071026 0%, #081226 60%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .container{width:100%;max-width:980px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    header h1{margin:0;font-size:20px;letter-spacing:0.2px}
+    header p{color:var(--muted);margin:0;font-size:13px}
+
+    .grid{display:grid;grid-template-columns:1fr 350px;gap:18px}
+    .card{background:var(--card);padding:18px;border-radius:14px;box-shadow:0 6px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.02)}
+
+    /* big display */
+    .thermo{display:flex;align-items:center;gap:18px}
+    .temp-display{flex:1;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),var(--glass));display:flex;align-items:center;justify-content:center;flex-direction:column}
+    .reading{font-size:64px;font-weight:700;line-height:1;color:var(--accent)}
+    .units{font-size:18px;color:var(--muted);margin-top:6px}
+
+    /* thermometer SVG container */
+    .thermo-viz{width:72px;height:200px;display:flex;align-items:center;justify-content:center}
+    svg{width:100%;height:100%}
+
+    /* controls */
+    .controls{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted)}
+    .row{display:flex;gap:8px;align-items:center}
+    .btn{background:linear-gradient(180deg,#1f2937,#0f1724);border:1px solid rgba(255,255,255,0.03);padding:10px 14px;border-radius:10px;color:#e6eef8;cursor:pointer;transition:transform .08s ease,box-shadow .08s}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{background:linear-gradient(180deg,var(--accent),#3b82f6);color:#04203a;font-weight:600}
+
+    .toggle{display:inline-flex;align-items:center;gap:8px}
+    .led-ind{width:14px;height:14px;border-radius:50%;background:#2b3036;box-shadow:inset 0 -2px 3px rgba(0,0,0,0.6)}
+    .led-ind.on{background:#22c55e;box-shadow:0 0 12px rgba(34,197,94,0.28)}
+
+    select,input[type=range]{width:100%}
+    .meta{font-size:12px;color:var(--muted)}
+
+    footer{margin-top:14px;color:var(--muted);font-size:13px;text-align:right}
+
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr;}
+      .thermo-viz{height:140px}
+      .reading{font-size:48px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Temp Sensor Portal</h1>
+        <p>Live readout • LED control • Precision adjustment</p>
+      </div>
+      <div class="meta">Status: <span id="connStatus">Disconnected</span></div>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <div class="thermo">
+          <div class="temp-display">
+            <div class="reading" id="tempValue">--.-</div>
+            <div class="units"><span id="unit">°C</span> &nbsp; • &nbsp; <span id="timestamp">--</span></div>
+          </div>
+
+          <div class="thermo-viz" aria-hidden>
+            <!-- Simple thermometer SVG. The fill level is updated from JS by changing --level on the <rect> via style attribute. -->
+            <svg viewBox="0 0 60 200" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#f97316"/>
+                  <stop offset="100%" stop-color="#fb923c"/>
+                </linearGradient>
+              </defs>
+              <rect x="18" y="10" width="24" height="150" rx="12" fill="#0b1220" stroke="#0f1724" stroke-width="1" />
+              <rect id="fill" x="22" y="12" width="16" height="0" rx="8" fill="url(#g1)" transform="translate(0,0)"/>
+              <circle cx="30" cy="174" r="22" fill="#081226" stroke="#0f1724" stroke-width="1"/>
+              <circle id="bulb" cx="30" cy="174" r="16" fill="#ef4444"/>
+            </svg>
+          </div>
+        </div>
+
+        <div style="margin-top:14px" class="controls">
+          <div>
+            <label for="precision">Precision</label>
+            <div class="row"><select id="precision" aria-label="Precision">
+              <option value="0">0 decimals</option>
+              <option value="1" selected>1 decimal</option>
+              <option value="2">2 decimals</option>
+              <option value="3">3 decimals</option>
+            </select></div>
+          </div>
+
+          <div>
+            <label>Readout Mode</label>
+            <div class="row">
+              <button class="btn" id="pollBtn">Poll /fetch</button>
+              <button class="btn" id="wsBtn">WebSocket</button>
+              <div style="flex:1"></div>
+              <button class="btn primary" id="refreshNow">Refresh</button>
+            </div>
+            <div class="meta" style="margin-top:6px">Hint: choose polling if your device exposes a REST API at <code>/api/temperature</code>, or WebSocket at <code>/ws/temperature</code>.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">Controls</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+
+          <div>
+            <label>LED</label>
+            <div class="row" style="align-items:center">
+              <div class="toggle">
+                <div id="ledIndicator" class="led-ind" aria-hidden></div>
+                <div id="ledLabel" class="meta">Off</div>
+              </div>
+              <div style="flex:1"></div>
+              <button class="btn" id="ledToggle">Toggle LED</button>
+            </div>
+            <div class="meta" style="margin-top:6px">This will POST to <code>/api/led</code> with JSON <code>{"on":true}</code>. The UI will optimistically update.</div>
+          </div>
+
+          <div>
+            <label>Temperature Range Preview</label>
+            <div class="row">
+              <input id="previewRange" type="range" min="-20" max="120" value="30" />
+              <div style="width:70px;text-align:right" class="meta" id="previewVal">30°C</div>
+            </div>
+            <div class="meta">Drag to preview thermometer fill level locally (does not change sensor).</div>
+          </div>
+
+          <div>
+            <label>Logs</label>
+            <div style="height:120px;overflow:auto;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px" id="log"></div>
+          </div>
+
+        </div>
+
+        <footer>
+          <small>Built for easy integration — edit endpoints in the script.</small>
+        </footer>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Configuration — change these to match your backend
+    const CONFIG = {
+      pollEndpoint: '/api/temperature',   // expects { temperature: number, unit: 'C'|'F', timestamp?: iso }
+      ledEndpoint: '/api/led',            // expects POST { on: true|false }
+      wsEndpoint: 'ws://' + location.host + '/ws/temperature',
+      pollIntervalMs: 2000
+    };
+
+    // UI refs
+    const tempValue = document.getElementById('tempValue');
+    const unitEl = document.getElementById('unit');
+    const timestampEl = document.getElementById('timestamp');
+    const precisionSel = document.getElementById('precision');
+    const fillRect = document.getElementById('fill');
+    const bulb = document.getElementById('bulb');
+    const ledIndicator = document.getElementById('ledIndicator');
+    const ledLabel = document.getElementById('ledLabel');
+    const ledToggle = document.getElementById('ledToggle');
+    const logEl = document.getElementById('log');
+    const connStatus = document.getElementById('connStatus');
+    const pollBtn = document.getElementById('pollBtn');
+    const wsBtn = document.getElementById('wsBtn');
+    const refreshNow = document.getElementById('refreshNow');
+    const previewRange = document.getElementById('previewRange');
+    const previewVal = document.getElementById('previewVal');
+
+    let poller = null;
+    let ws = null;
+    let ledState = false;
+    let precision = Number(precisionSel.value);
+
+    function log(...args){
+      const time = new Date().toLocaleTimeString();
+      logEl.innerHTML = `<div>[${time}] ${args.join(' ')}</div>` + logEl.innerHTML;
+    }
+
+    function setPrecision(p){ precision = Number(p); precisionSel.value = p; }
+
+    function formatTemp(val){ if (val === null || val === undefined || isNaN(val)) return '--'; return Number(val).toFixed(precision); }
+
+    function updateThermoViz(tempC){
+      // map tempC from -20..120 to height 0..140 (reverse y)
+      const min=-20, max=120; const h = Math.max(0, Math.min(1,(tempC-min)/(max-min)));
+      const height = Math.round(140 * h);
+      const y = 12 + (140 - height);
+      fillRect.setAttribute('y', String(y));
+      fillRect.setAttribute('height', String(height));
+      // adjust bulb color slightly
+      const t = Math.max(0, Math.min(1,(tempC+20)/140));
+      const r = Math.round(239 * (0.6 + 0.4*t));
+      const g = Math.round(68 * (0.4 - 0.3*(1-t)));
+      bulb.setAttribute('fill', `rgb(${r},${Math.max(30,g)},${Math.round(50*(1-t))})`);
+    }
+
+    function setLedUI(on){ ledState = !!on; ledIndicator.classList.toggle('on', ledState); ledLabel.textContent = ledState ? 'On' : 'Off'; }
+
+    async function fetchTemperature(){
+      try{
+        const res = await fetch(CONFIG.pollEndpoint,{cache:'no-cache'});
+        if(!res.ok) throw new Error(res.status+' '+res.statusText);
+        const j = await res.json();
+        const temp = (j.temperature !== undefined) ? j.temperature : (j.temp ?? null);
+        const unit = j.unit || 'C';
+        displayTemperature(temp, unit, j.timestamp);
+        connStatus.textContent = 'Connected (polling)';
+        log('Fetched', temp, unit);
+      }catch(e){
+        connStatus.textContent = 'Poll failed';
+        log('Poll error:', e.message);
+      }
+    }
+
+    function displayTemperature(temp, unit='C', ts){
+      tempValue.textContent = (temp === null || temp === undefined) ? '--' : formatTemp(temp) ;
+      unitEl.textContent = `°${unit}`;
+      const timeText = ts ? (new Date(ts)).toLocaleString() : (new Date()).toLocaleTimeString();
+      timestampEl.textContent = timeText;
+      // animate thermometer; make sure we feed Celsius to visualization
+      const tempC = (unit === 'F') ? ( (temp - 32) * 5/9 ) : temp;
+      if(!isNaN(tempC)) updateThermoViz(tempC);
+    }
+
+    // LED control
+    async function sendLed(on){
+      // optimistic UI
+      setLedUI(on);
+      try{
+        const res = await fetch(CONFIG.ledEndpoint,{
+          method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({on})
+        });
+        if(!res.ok) throw new Error(res.status+' '+res.statusText);
+        const j = await res.json();
+        // if server returns explicit state, sync
+        if(typeof j.on === 'boolean') setLedUI(j.on);
+        log('LED set to', on);
+      }catch(e){
+        log('LED error:', e.message);
+        // optionally revert UI or mark as uncertain
+      }
+    }
+
+    // WebSocket handler
+    function startWebSocket(){
+      if(ws){ ws.close(); ws = null; }
+      try{
+        ws = new WebSocket(CONFIG.wsEndpoint);
+        connStatus.textContent = 'Connecting (ws)...';
+        ws.onopen = ()=>{ connStatus.textContent = 'Connected (ws)'; log('WS open'); };
+        ws.onmessage = (evt)=>{
+          try{ const j = JSON.parse(evt.data); const temp = j.temperature ?? j.temp; displayTemperature(temp, j.unit||'C', j.timestamp); }
+          catch(e){ log('WS parse error', e.message); }
+        };
+        ws.onclose = ()=>{ connStatus.textContent = 'WS closed'; log('WS closed'); };
+        ws.onerror = (e)=>{ connStatus.textContent = 'WS error'; log('WS error'); };
+      }catch(e){ connStatus.textContent='WS init error'; log('WS init', e.message); }
+    }
+
+    // Polling control
+    function startPolling(){ stopPolling(); poller = setInterval(fetchTemperature, CONFIG.pollIntervalMs); connStatus.textContent='Polling'; fetchTemperature(); }
+    function stopPolling(){ if(poller){ clearInterval(poller); poller=null; } }
+
+    // UI wiring
+    precisionSel.addEventListener('change', (e)=>{ setPrecision(e.target.value); fetchTemperature(); });
+    ledToggle.addEventListener('click', ()=> sendLed(!ledState));
+    pollBtn.addEventListener('click', ()=>{ stopPolling(); if(ws){ ws.close(); ws=null; } startPolling(); });
+    wsBtn.addEventListener('click', ()=>{ stopPolling(); startWebSocket(); });
+    refreshNow.addEventListener('click', ()=> fetchTemperature());
+    previewRange.addEventListener('input', (e)=>{ const v=Number(e.target.value); previewVal.textContent = v + '°C'; updateThermoViz(v); });
+
+    // initialize
+    setPrecision(precisionSel.value);
+    setLedUI(false);
+    previewVal.textContent = previewRange.value + '°C';
+
+    // try to start polling by default
+    startPolling();
+
+    // If backend is not present, provide a demo fallback: every 2s simulate a warm/cool sine wave.
+    (async function demoFallback(){
+      // attempt to ping the endpoint once — if it fails quickly, switch to demo mode
+      try{
+        const controller = new AbortController();
+        const id = setTimeout(()=>controller.abort(), 1000);
+        const res = await fetch(CONFIG.pollEndpoint,{signal:controller.signal});
+        clearTimeout(id);
+        // if success, nothing to do. If not ok, fallthrough to demo
+        if(res.ok) return;
+      }catch(e){ /* ignored */ }
+
+      log('No backend detected — falling back to demo mode');
+      stopPolling(); if(ws){ ws.close(); ws=null; }
+      let t = 0;
+      setInterval(()=>{
+        t += 0.15;
+        const temp = 22 + Math.sin(t)*6 + Math.sin(t*0.3)*2; // demo waveform
+        displayTemperature(temp,'C');
+      }, CONFIG.pollIntervalMs);
+    })();
+
+  </script>
+</body>
+</html>
