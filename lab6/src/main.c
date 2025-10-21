@@ -44,18 +44,21 @@ int inString(char request[], char des[]) {
 
 int updateLEDStatus(char request[])
 {
-	int led_status = 0;
-	// The request has been received. now process to determine whether to turn the LED on or off
-	if (inString(request, "ledoff")==1) {
-		digitalWrite(LED_PIN, PIO_LOW);
-		led_status = 0;
-	}
-	else if (inString(request, "ledon")==1) {
-		digitalWrite(LED_PIN, PIO_HIGH);
-		led_status = 1;
-	}
+    // First read the current LED status
+    int led_status = digitalRead(LED_PIN);
+    
+    // Only change the LED status if the request explicitly asks for it
+    if (inString(request, "ledoff")==1) {
+        digitalWrite(LED_PIN, PIO_LOW);
+        led_status = 0;
+    }
+    else if (inString(request, "ledon")==1) {
+        digitalWrite(LED_PIN, PIO_HIGH);
+        led_status = 1;
+    }
+    // For all other requests keep the current LED status
 
-	return led_status;
+    return led_status;
 }
 
 // Function to parse the request and update bit resolution
