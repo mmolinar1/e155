@@ -8,7 +8,6 @@ Source code for DS1722 functions
 */
 
 #include "DS1722.h"
-#include "main.h"
 #include "STM32L432KC_SPI.h"
 #include "STM32L432KC_GPIO.h"
 
@@ -49,29 +48,37 @@ void initDS1722(uint8_t resolution) {
             break;
     }
 
-    digitalWrite(SPI_CE, PIO_LOW); // Select device
+    digitalWrite(SPI_CE, PIO_HIGH); // Select device
     
     // Send write-config command followed by the resolution config byte
     spiSendReceive(CONFIG_WRITE_CMD); 
     spiSendReceive(config_byte); 
     
-    digitalWrite(SPI_CE, PIO_HIGH); // Deselect device
+    digitalWrite(SPI_CE, PIO_LOW); // Deselect device
 }
+
 
 // Reads the temperature from the DS1722
 float readTemp(void) {
-    digitalWrite(SPI_CE, PIO_LOW); // Select device
+    uint8_t tempLow, tempHigh;
     
-    // Send command to read LSB, then read LSB and MSB
-    spiSendReceive(READ_TEMP_LSB_CMD); 
-    uint8_t tempLow = spiSendReceive(0x00); // Read LSB from register 0x01
-    uint8_t tempHigh = spiSendReceive(0x00); // Read MSB from register 0x02
+    // Read LSB
+    digitalWrite(SPI_CE, PIO_HIGH);
+    spiSendReceive(READ_TEMP_LSB_CMD);
+    tempLow = spiSendReceive(0x00);
+    digitalWrite(SPI_CE, PIO_LOW);
     
-    digitalWrite(SPI_CE, PIO_HIGH); // Deselect device
-
-    // Combine bytes into a 16-bit signed integer
+    // Read MSB (separate transaction)
+    digitalWrite(SPI_CE, PIO_HIGH);
+    spiSendReceive(READ_TEMP_MSB_CMD);
+    tempHigh = spiSendReceive(0x00);
+    digitalWrite(SPI_CE, PIO_LOW);
+    
+    // Process temperature data
     int16_t raw_temp = (tempHigh << 8) | tempLow;
     
+
+
     int16_t scaled_temp;
     float multiplier;
 

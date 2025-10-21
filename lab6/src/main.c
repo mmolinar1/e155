@@ -87,15 +87,15 @@ int main(void) {
   gpioEnable(GPIO_PORT_C);
 
   pinMode(PB3, GPIO_OUTPUT);
-  pinMode(PA6, GPIO_OUTPUT);
+  pinMode(LED_PIN, GPIO_OUTPUT);
   
   RCC->APB2ENR |= (RCC_APB2ENR_TIM15EN);
   initTIM(TIM15);
   
   USART_TypeDef * USART = initUSART(USART1_ID, 125000);
 
-  // SPI initialization (mode 1)
-  initSPI(0b111, 0, 0);
+  // SPI initialization
+  initSPI(0b011, 0, 1);
 
   // Sensor Initialization
   initDS1722(RES_8_BIT);
@@ -123,7 +123,7 @@ int main(void) {
     // Reading tempertaure
     float current_temp = readTemp();
     char temp_str[32];
-    sprintf(temp_str, "%.2f", current_temp);  // format temp as string
+    sprintf(temp_str, "%.4f", current_temp);  // format temp as string
   
     // Update string with current LED state
     int led_status = updateLEDStatus(request);
