@@ -12,8 +12,13 @@ Source code for SPI functions
 #include "STM32L432KC_GPIO.h"
 #include "STM32L432KC_RCC.h"
 
-// enable and initialize the SPI peripheral
-void initSPI(int br, int cpol, int cpha) {
+/* Enables the SPI peripheral and intializes its clock speed (baud rate), polarity, and phase.
+ *    -- br: (0b000 - 0b111). The SPI clk will be the master clock / 2^(BR+1).
+ *    -- cpol: clock polarity (0: inactive state is logical 0, 1: inactive state is logical 1).
+ *    -- cpha: clock phase (0: data captured on leading edge of clk and changed on next edge, 
+ *          1: data changed on leading edge of clk and captured on next edge)
+ * Refer to the datasheet for more low-level details. */ 
+ void initSPI(int br, int cpol, int cpha) {
     // turn on GPIOA and GPIOB clk domains
     RCC->AHB2ENR |= (RCC_AHB2ENR_GPIOAEN | RCC_AHB2ENR_GPIOBEN);
 
@@ -37,22 +42,29 @@ void initSPI(int br, int cpol, int cpha) {
     // Set baud rate divider
     SPI1->CR1 |= _VAL2FLD(SPI_CR1_BR, br);
 
+    // Set to MSTR
     SPI1->CR1 |= (SPI_CR1_MSTR);
     SPI1->CR1 &= ~(SPI_CR1_CPOL | SPI_CR1_CPHA | SPI_CR1_LSBFIRST | SPI_CR1_SSM);
+
     SPI1->CR1 |= _VAL2FLD(SPI_CR1_CPHA, cpha);
     SPI1->CR1 |= _VAL2FLD(SPI_CR1_CPOL, cpol);
+
     SPI1->CR2 |= _VAL2FLD(SPI_CR2_DS, 0b0111);
     SPI1->CR2 |= (SPI_CR2_FRXTH | SPI_CR2_SSOE);
 
     // Enable SPI
-    SPI1->CR1 |= (SPI_CR1_SPE); 
+    SPI1->CR1 |= (SPI_CR1_SPE);
 }
 
-// transmit a character over SPI and return the received character
+/* Transmits a character (1 byte) over SPI and returns the received character.
+ *    -- send: the character to send over SPI
+ *    -- return: the character received over SPI */
 char spiSendReceive(char send) {
     while(!(SPI1->SR & SPI_SR_TXE)); // Wait until the transmit buffer is empty
+
     *(volatile char *) (&SPI1->DR) = send; // Transmit the character over SPI
-    while(!(SPI1->SR & SPI_SR_RXNE)); // Wait until data has been received
-    char rec = (volatile char) SPI1->DR;
-    return rec; // Return received character
+
+    while(!(SPI1->SR & SPI_SR_RXNE)); // Wait until data in RX
+
+    return (volatile char) SPI1->DR; // received character
 }
