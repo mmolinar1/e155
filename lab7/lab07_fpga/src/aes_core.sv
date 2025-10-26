@@ -45,6 +45,7 @@ module aes_core(input  logic         clk,
     logic [127:0] mix_cols_out;
     logic [127:0] add_round_key_out;
     logic [127:0] current_round_key;
+    logic         key_expansion_done;
 
     sub_bytes sub_bytes(
         .a(state_reg),
@@ -62,14 +63,17 @@ module aes_core(input  logic         clk,
         .y(mix_cols_out)
     );
 
-     add_round_key add_round_key(
+    add_round_key add_round_key(
         .state_in(state_reg),
         .round_key(current_round_key),
         .state_out(add_round_key_out)
     );
 
-    // working on key expansion module
-    // assign current_round_key = key;
+    key_expansion key_expansion(
+        .clk(clk), .reset(reset), .start(load), 
+        .init_key(key), .round_number(round_count), 
+        .round_key(current_round_key), .done(key_expansion_done)
+    );
 
     // State register
     always_ff @(posedge clk) begin
@@ -94,7 +98,7 @@ module aes_core(input  logic         clk,
                 state_reg <= add_round_key_out;
 			end
 			SUB_BYTES: begin
-				state_reg <= sub_rows_out;
+				state_reg <= sub_bytes_out;
 			end
 			SHIFT_ROWS: begin
 				state_reg <= shift_rows_out;
@@ -122,7 +126,7 @@ module aes_core(input  logic         clk,
     
         case(state)
             IDLE: 
-                if (load) nextstate = FIRST_ROUND_KEY;
+                if (load && key_expansion_done) nextstate = FIRST_ROUND_KEY;
                     else nextstate = IDLE;
             FIRST_ROUND_KEY: nextstate = SUB_BYTES;
 			SUB_BYTES: nextstate = SHIFT_ROWS;
@@ -145,10 +149,10 @@ module aes_core(input  logic         clk,
                 done = 1;
                 nextstate = IDLE;
             end
-            default: nextstate = IDLE;
+            default: nextstate = state;
         endcase
     end
-    
+
     // Output logic
     assign cyphertext = (state == DONE) ? state_reg : 128'b0;
 endmodule
