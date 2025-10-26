@@ -44,7 +44,7 @@ module key_expansion(input  logic         clk,
     sbox sbox3(temp_rot[7:0],   temp_sub[7:0]);
 
     // Round constant logic (see Table 5 in NIST FIPS 197)
-    always comb begin
+    always_comb begin
         case (i / 4) // i is the word index, so i/4 gives the round
             1:  rcon = 32'h01000000;
             2:  rcon = 32'h02000000;
@@ -71,9 +71,10 @@ module key_expansion(input  logic         clk,
 	end
 	
     // ROTWORD([a0, a1, a2, a3]) = [a1, a2, a3, a0] - eq. 5.10 in NIST FIPS 197
+	logic [31:0] w_im1, w_im4;
     assign w_im1 = w[i-1];  // geting the previous word
     assign w_im4 = w[i-4];  // getting the 4th word back
-    assign temp_rot <= {w_im1[23:16], w_im1[15:8], w_im1[7:0], w_im1[31:24]};
+    assign temp_rot = {w_im1[23:16], w_im1[15:8], w_im1[7:0], w_im1[31:24]};
 
 	// logic for control signals
     always_ff @(posedge clk) begin
@@ -116,7 +117,7 @@ module key_expansion(input  logic         clk,
             DONE: nextstate = IDLE;
             default: nextstate = state;
         endcase
-    end
+	end 
 
     // Output logic
     // The key for a given round

@@ -27,7 +27,7 @@ module shift_rows(input  logic [127:0] state_in,  // 4x4 matrix of bytes
   // row 1
   assign state_out[15:8] = state_in[47:40];     // byte 1 > 5
   assign state_out[47:40] = state_in[79:72];    // byte 5 > 9
-  assign state_out[79:73] = state_in[111:104];  // byte 9 > 13
+  assign state_out[79:72] = state_in[111:104];  // byte 9 > 13
   assign state_out[111:104] = state_in[15:8];   // byte 13 > 1
 
   // row 2

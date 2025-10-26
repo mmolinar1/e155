@@ -47,7 +47,7 @@ module aes_core(input  logic         clk,
     logic [127:0] current_round_key;
     logic         key_expansion_done;
 
-    sub_bytes sub_bytes(
+    sbox_sync sub_bytes(
         .a(state_reg),
         .clk(clk),
         .y(sub_bytes_out)
