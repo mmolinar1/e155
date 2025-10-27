@@ -105,8 +105,7 @@ module key_expansion(input  logic         clk,
 
     // Next state logic
     always_comb begin
-        done = 0;  // done flag default low
-    
+        done = (state == DONE);  
         case(state)
             IDLE: 
                 if (start) nextstate = LOAD;
@@ -117,11 +116,10 @@ module key_expansion(input  logic         clk,
             DONE: nextstate = IDLE;
             default: nextstate = state;
         endcase
-	end 
+	end
 
     // Output logic
     // The key for a given round
     assign round_key = {w[round_number*4], w[round_number*4+1], w[round_number*4+2], w[round_number*4+3]};
-    assign done = (state == DONE);
 
 endmodule
