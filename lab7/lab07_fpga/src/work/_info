@@ -1,8 +1,10 @@
 m255
 K4
 z2
-!s12c _opt1
+!s12c _opt2
 Z0 !s99 nomlopt
+!s12c _opt1
+R0
 Z1 !s12c _opt
 R0
 R1
@@ -45,6 +47,21 @@ R6
 R7
 R8
 n@_opt1
+R9
+R2
+T_opt2
+!s110 1761584326
+VzCkKl57<3_4l<c5eOP;^j3
+04 18 4 work testbench_aes_sbox fast 0
+=1-00be43eaeac0-68ffa4c6-11-120
+R0
+R3
+R4
+R5
+R6
+R7
+R8
+n@_opt2
 R9
 vadd_round_key
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/add_round_key.sv
