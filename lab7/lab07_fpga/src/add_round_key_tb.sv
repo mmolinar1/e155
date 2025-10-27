@@ -13,7 +13,7 @@ module add_round_key_tb();
 
     add_round_key dut(
         .state_in(state_in),
-        .round_key(round_key)
+        .round_key(round_key),
         .state_out(state_out)
     );
 
@@ -23,11 +23,11 @@ module add_round_key_tb();
     // the cipher example in Appendix B
 
     initial begin
+        logic [127:0] expected_state_out = 128'h193de33bf4571d3b2a22ab2ed7344908;
+
         // Initialize inputs
         state_in = 128'h3243f6a8885a308d313198a2e0370734;
         round_key = 128'h2b7e151628aed2a6abf7158809cf4f3c;
-        
-        logic [127:0] expected_state_out = 128'h193de33bf4571d3b2a22ab2ed7344908;
         
         #10;
 

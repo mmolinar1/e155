@@ -9,13 +9,13 @@
 
 module key_expansion_tb();
 
-    logic clk, rest, load, key_expansion_done;
+    logic clk, reset, start, key_expansion_done;
     logic [127:0] init_key, current_round_key;
     logic [3:0]   round_number;
     logic [127:0] expected_key;
 
     key_expansion dut(
-        .clk(clk), .reset(reset), .start(load), 
+        .clk(clk), .reset(reset), .start(start), 
         .init_key(init_key), .round_number(round_number), 
         .round_key(current_round_key), .done(key_expansion_done)
     );
@@ -28,6 +28,8 @@ module key_expansion_tb();
 
     // Start of test (referencing NIST FIPS 197 Appendix A.1)
     initial begin
+        int error_count = 0;
+
         // Initialize inputs
         clk = 0;
         reset = 1;
@@ -48,8 +50,6 @@ module key_expansion_tb();
 
         // Wait for key expansion to finish
         wait(key_expansion_done);
-
-        integer error_count = 0;
         
         for (int i = 0; i <= 2; i = i + 1) begin
             round_number = i;
@@ -61,17 +61,19 @@ module key_expansion_tb();
                 default: expected_key = 128'h0;
             endcase
         
-        #1;
+            #1;
 
-        if (current_round_key != expected_key) begin
-            error_count = error_count + 1;
+            if (current_round_key != expected_key) begin
+                $display("Error at round %0d: got %h, expected %h", i, current_round_key, expected_key);
+                error_count = error_count + 1;
+            end
         end
 
         // Check if output matches the expected result
         if (error_count == 0) begin
             $display("All tests passed");
         end else begin
-            $display("Tests failed");
+            $display("%0d tests failed", error_count);
         end
 
         // stop the simulation
