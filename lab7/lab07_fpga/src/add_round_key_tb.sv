@@ -7,7 +7,7 @@
 
 `timescale 1ps/1ps
 
-module shift_rows_tb();
+module add_round_key_tb();
 
     logic [127:0] state_in, round_key, state_out;
 
