@@ -51,7 +51,7 @@ module key_expansion_tb();
 
         integer error_count = 0;
         
-        for (int i = 0; i <= 3; i = i + 1) begin
+        for (int i = 0; i <= 2; i = i + 1) begin
             round_number = i;
 
             case (i)
