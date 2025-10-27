@@ -115,7 +115,7 @@ module aes_core(input  logic         clk,
                     state_reg <= shift_rows_out;
                 end
                 ADD_ROUND_KEY: begin
-                    state_reg <= add_round_key_out;
+                    state_reg <= mix_cols_out;
                     if(round_count < 10) begin
                         round_count <= round_count + 1;
                     end

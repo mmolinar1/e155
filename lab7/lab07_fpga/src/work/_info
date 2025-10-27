@@ -9,6 +9,15 @@ R0
 R1
 R0
 R1
+!s11f MIXED_VERSIONS
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
 R0
 R1
 R0
@@ -69,7 +78,6 @@ R2
 R1
 R2
 R1
-!s11f vlog 2024.2 2024.05, May 20 2024
 13
 !s112 1.1
 !i10d 8192
@@ -93,20 +101,19 @@ n@_opt
 Z9 OL;O;2024.2;79
 R3
 T_opt1
-!s110 1761594881
-V0T>j1>CN0SETK@:^D1mm31
+!s110 1761608958
+VBiXf@30F7_zgHb@F0RO8G2
 04 18 4 work testbench_aes_core fast 0
-=33-00be43eaeac0-68ffce01-5c-2340
+=12-00be43eaeac0-690004fe-51-49e4
 R1
-!s12f OEM25U46 
+!s12f OEM100
 R4
-R5
+!s124 OEM10U47 
 R6
 R7
 R8
 n@_opt1
-R9
-R3
+OL;O;2024.3;79
 T_opt2
 !s110 1761584326
 VzCkKl57<3_4l<c5eOP;^j3
@@ -125,7 +132,7 @@ R3
 vadd_round_key
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/add_round_key.sv
 Z10 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z11 !s110 1761595116
+Z11 !s110 1761608951
 !i10b 1
 !s100 `gH^DYZVbhIXKFPY6BMB`1
 I>89mYC[LlXmmgUh0@Z]DL1
@@ -134,14 +141,14 @@ Z12 dC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src
 w1761517631
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/add_round_key.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/add_round_key.sv
-!i122 937
+!i122 1026
 L0 14 7
 Z13 VDg1SIo80bB@j0V0VzS_@n1
-Z14 OL;L;2024.2;79
+Z14 OL;L;2024.3;79
 r1
 !s85 0
 31
-Z15 !s108 1761595116.000000
+Z15 !s108 1761608951.000000
 !s107 C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/add_round_key.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/add_round_key.sv|
 !i113 0
@@ -159,7 +166,7 @@ R12
 w1761595025
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/add_round_key_tb.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/add_round_key_tb.sv
-!i122 938
+!i122 1027
 L0 10 37
 R13
 R14
@@ -184,7 +191,7 @@ R12
 w1761517454
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes.sv
-!i122 939
+!i122 1028
 L0 12 13
 R13
 R14
@@ -200,17 +207,17 @@ R8
 vaes_core
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_core.sv
 R10
-Z17 !s110 1761595117
+R11
 !i10b 1
-!s100 1HL<E2=K]WB]4DgWm`@6c0
-IJ=1BKP7FBAehVjeFZhi;J3
+!s100 Lc_8o3KLnB@ka5fk<mAVN2
+ICk]L^QB]fmf7RWag8[U`43
 S1
 R12
-w1761595022
+w1761608901
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_core.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_core.sv
-!i122 940
-L0 26 139
+!i122 1029
+L0 26 140
 R13
 R14
 r1
@@ -225,7 +232,7 @@ R8
 vaes_spi
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_spi.sv
 R10
-R17
+Z17 !s110 1761608952
 !i10b 1
 !s100 =U@9RM2UUIeBRUAQo43lg1
 I0C9]2?jd^1c:i;@gg7]IR1
@@ -234,14 +241,14 @@ R12
 Z18 w1761516289
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_spi.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_spi.sv
-!i122 943
+!i122 1032
 L0 14 29
 R13
 R14
 r1
 !s85 0
 31
-Z19 !s108 1761595117.000000
+Z19 !s108 1761608952.000000
 !s107 C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_spi.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_spi.sv|
 !i113 0
@@ -259,7 +266,7 @@ R12
 R18
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/galois_mult.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/galois_mult.sv
-!i122 945
+!i122 1034
 Z20 L0 14 8
 R13
 R14
@@ -284,7 +291,7 @@ R12
 w1761588736
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/key_expansion.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/key_expansion.sv
-!i122 946
+!i122 1035
 L0 13 113
 R13
 R14
@@ -309,7 +316,7 @@ R12
 w1761588920
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/key_expansion_tb.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/key_expansion_tb.sv
-!i122 947
+!i122 1036
 L0 10 74
 R13
 R14
@@ -334,7 +341,7 @@ R12
 R18
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/mix_column.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/mix_column.sv
-!i122 948
+!i122 1037
 L0 14 19
 R13
 R14
@@ -359,7 +366,7 @@ R12
 R18
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/mix_columns.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/mix_columns.sv
-!i122 949
+!i122 1038
 R20
 R13
 R14
@@ -384,7 +391,7 @@ R12
 R18
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sbox.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sbox.sv
-!i122 950
+!i122 1039
 L0 14 10
 R13
 R14
@@ -400,7 +407,7 @@ R8
 vsbox_sync
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sbox_sync.sv
 R10
-R17
+Z21 !s110 1761608953
 !i10b 1
 !s100 ?DJ;h0UJP7O^m>DCPin5n3
 IX=C6_R6]KB=ScDRbkeB3P0
@@ -409,14 +416,14 @@ R12
 R18
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sbox_sync.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sbox_sync.sv
-!i122 951
+!i122 1040
 L0 13 16
 R13
 R14
 r1
 !s85 0
 31
-R19
+Z22 !s108 1761608953.000000
 !s107 C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sbox_sync.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sbox_sync.sv|
 !i113 0
@@ -425,23 +432,23 @@ R8
 vshift_rows
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows.sv
 R10
-R17
+R21
 !i10b 1
-!s100 A0KQGX2h@ISLh09RF8h8Q1
-I_OT=>6=ZbDQIReH3ESX]I3
+!s100 GUSzk669[iWcR]NEcPV;R3
+I87BeK<3b7GRN[@nVJ;ijT2
 S1
 R12
-w1761519540
+w1761608333
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows.sv
-!i122 952
+!i122 1041
 L0 12 34
 R13
 R14
 r1
 !s85 0
 31
-R19
+R22
 !s107 C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows.sv|
 !i113 0
@@ -450,7 +457,7 @@ R8
 vshift_rows_tb
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv
 R10
-R17
+R21
 !i10b 1
 !s100 IS8YZOGiZ[gUXbU5oVNK`2
 ILEGaP6g_29BA13KzDZ1L>3
@@ -459,14 +466,14 @@ R12
 w1761582425
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv
-!i122 953
+!i122 1042
 L0 11 41
 R13
 R14
 r1
 !s85 0
 31
-R19
+R22
 !s107 C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv|
 !i113 0
@@ -475,7 +482,7 @@ R8
 vsub_bytes
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sub_bytes.sv
 R10
-R17
+R21
 !i10b 1
 !s100 :aRbYMRd[OXgCPFl1zSQK0
 IEa8DKEP1FWMFMhd2baTPk0
@@ -484,14 +491,14 @@ R12
 w1761581077
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sub_bytes.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sub_bytes.sv
-!i122 954
+!i122 1043
 L0 13 18
 R13
 R14
 r1
 !s85 0
 31
-R19
+R22
 !s107 C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sub_bytes.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/sub_bytes.sv|
 !i113 0
@@ -500,7 +507,7 @@ R8
 vtestbench_aes_core
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_core_tb.sv
 R10
-R17
+R11
 !i10b 1
 !s100 WJJkACoP??DJVN@zRn>JQ3
 Ike:e2GbE@hR:H1RiPHWCD0
@@ -509,14 +516,14 @@ R12
 w1761595020
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_core_tb.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_core_tb.sv
-!i122 941
+!i122 1030
 L0 11 43
 R13
 R14
 r1
 !s85 0
 31
-R19
+R15
 !s107 C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_core_tb.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_core_tb.sv|
 !i113 0
@@ -525,7 +532,7 @@ R8
 vtestbench_aes_sbox
 2C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_sbox_tb.sv
 R10
-R17
+R11
 !i10b 1
 !s100 E802:^hIgYbZd^<0leGNb3
 I5[TH6il5U0]JfHh^Rm@_d1
@@ -534,14 +541,14 @@ R12
 R18
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_sbox_tb.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_sbox_tb.sv
-!i122 942
+!i122 1031
 L0 7 67
 R13
 R14
 r1
 !s85 0
 31
-R19
+R15
 !s107 C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_sbox_tb.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_sbox_tb.sv|
 !i113 0
@@ -559,7 +566,7 @@ R12
 R18
 8C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_spi_tb.sv
 FC:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/aes_spi_tb.sv
-!i122 944
+!i122 1033
 L0 8 73
 R13
 R14
