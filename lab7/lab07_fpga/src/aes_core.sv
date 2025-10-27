@@ -34,11 +34,11 @@ module aes_core(input  logic         clk,
     // FSM with control signals used to 
     // perform rounds sequentially
 
-    typedef enum logic [3:0] {IDLE, FIRST_ROUND_KEY, SUB_BYTES, SHIFT_ROWS, MIX_COLS, ADD_ROUND_KEY, DONE} statetype;
+    typedef enum logic [3:0] {IDLE, WAIT_KEYS, FIRST_ROUND_KEY, SUB_BYTES, SHIFT_ROWS, MIX_COLS, ADD_ROUND_KEY, DONE} statetype;
     statetype state, nextstate;
 
     logic [127:0] state_reg;
-    logic [3:0]   round_count; // Counts from 0 to 9 for the for loop
+    logic [3:0]   round_count; // Counts from 0 to 10 for the for loop
 
     logic [127:0] sub_bytes_out;
     logic [127:0] shift_rows_out;
@@ -46,6 +46,7 @@ module aes_core(input  logic         clk,
     logic [127:0] add_round_key_out;
     logic [127:0] current_round_key;
     logic         key_expansion_done;
+    logic         key_expansion_start;
 
     sub_bytes sub_bytes(
         .a(state_reg),
@@ -70,7 +71,7 @@ module aes_core(input  logic         clk,
     );
 
     key_expansion key_expansion(
-        .clk(clk), .reset(reset), .start(load), 
+        .clk(clk), .reset(reset), .start(key_expansion_start), 
         .init_key(key), .round_number(round_count), 
         .round_key(current_round_key), .done(key_expansion_done)
     );
@@ -79,8 +80,6 @@ module aes_core(input  logic         clk,
     always_ff @(posedge clk) begin
         if (~reset) begin
 			state <= IDLE;
-            state_reg <= 128'b0;
-            round_count <= 0;
         end else begin
 			state <= nextstate;	
 		end
@@ -88,36 +87,41 @@ module aes_core(input  logic         clk,
 	
 	// logic for control signals
     always_ff @(posedge clk) begin
-        case(state)
-            IDLE: 
-                if (load) begin
-                    state_reg <= plaintext;
-                    round_count <= 0;
+        if (~reset) begin
+            state_reg <= '0;
+            round_count <= 0;
+            key_expansion_start <= 0;
+        end else begin
+            case(state)
+                IDLE: 
+                    if (load) begin
+                        state_reg <= plaintext;
+                        round_count <= 0;
+                        key_expansion_start <= 1;
+                    end
+                WAIT_KEYS: begin
+                    key_expansion_start <= 0;
                 end
-            FIRST_ROUND_KEY: begin
-                state_reg <= add_round_key_out;
-			end
-			SUB_BYTES: begin
-				state_reg <= sub_bytes_out;
-			end
-			SHIFT_ROWS: begin
-				state_reg <= shift_rows_out;
-			end
-			MIX_COLS: begin
-				state_reg <= mix_cols_out;
-			end
-            ADD_ROUND_KEY: begin
-				state_reg <= add_round_key_out;
-
-                // increment the round counter
-                if(round_count < 10) begin
-                    round_count <= round_count + 1;
-			    end
-            end
-            default: begin
-				round_count <= 0;
-			end
-        endcase
+                FIRST_ROUND_KEY: begin
+                    state_reg <= add_round_key_out;
+                    round_count <= 1;
+                end
+                SUB_BYTES: begin // wait state for sub_bytes
+                end
+                SHIFT_ROWS: begin
+                    state_reg <= sub_bytes_out;
+                end
+                MIX_COLS: begin
+                    state_reg <= shift_rows_out;
+                end
+                ADD_ROUND_KEY: begin
+                    state_reg <= add_round_key_out;
+                    if(round_count < 10) begin
+                        round_count <= round_count + 1;
+                    end
+                end
+            endcase
+        end
     end
 
     // Next state logic
@@ -126,12 +130,14 @@ module aes_core(input  logic         clk,
     
         case(state)
             IDLE: 
-                if (load && key_expansion_done) nextstate = FIRST_ROUND_KEY;
+                if (load) nextstate = WAIT_KEYS;
                     else nextstate = IDLE;
+            WAIT_KEYS: if(key_expansion_done) nextstate = FIRST_ROUND_KEY;
+                       else nextstate = WAIT_KEYS;
             FIRST_ROUND_KEY: nextstate = SUB_BYTES;
 			SUB_BYTES: nextstate = SHIFT_ROWS;
 			SHIFT_ROWS: begin
-				if (round_count == 9) begin
+				if (round_count == 10) begin
                     nextstate = ADD_ROUND_KEY;
                 end else begin
                     nextstate = MIX_COLS;
@@ -139,7 +145,7 @@ module aes_core(input  logic         clk,
 			end
 			MIX_COLS: nextstate = ADD_ROUND_KEY;
             ADD_ROUND_KEY: begin
-				if (round_count == 9) begin
+				if (round_count == 10) begin
                     nextstate = DONE;
                 end else begin
                     nextstate = SUB_BYTES;

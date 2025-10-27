@@ -9,11 +9,11 @@
 /////////////////////////////////////////////
 
 module testbench_aes_core();
-    logic clk, load, done;
+    logic clk, reset, load, done;
     logic [127:0] key, plaintext, cyphertext, expected;
     
     // device under test
-    aes_core dut(clk, load, key, plaintext, done, cyphertext);
+    aes_core dut(clk, reset, load, key, plaintext, done, cyphertext);
     
     // test case
     initial begin   
@@ -35,6 +35,7 @@ module testbench_aes_core();
 		end
         
     initial begin
+      reset = 1'b0; #30; reset = 1'b1; #10;
       load = 1'b1; #22; load = 1'b0; //Pulse load to start conversion
     end
 
