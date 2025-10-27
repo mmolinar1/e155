@@ -64,7 +64,6 @@ module key_expansion(input  logic         clk,
     always_ff @(posedge clk) begin
         if (~reset) begin
 			state <= IDLE;
-            i <= 0;
         end else begin
 			state <= nextstate;	
 		end
@@ -113,6 +112,7 @@ module key_expansion(input  logic         clk,
             LOAD: nextstate = GEN;
             // keep generating until the last word (44) is reached
             GEN: if (i > 43) nextstate = DONE;
+                 else nextstate = GEN;
             DONE: nextstate = IDLE;
             default: nextstate = state;
         endcase

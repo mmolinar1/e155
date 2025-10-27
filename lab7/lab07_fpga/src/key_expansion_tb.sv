@@ -28,18 +28,17 @@ module key_expansion_tb();
 
     // Start of test (referencing NIST FIPS 197 Appendix A.1)
     initial begin
-        int error_count = 0;
+        logic error_count = 0;
 
         // Initialize inputs
         clk = 0;
-        reset = 1;
+        reset = 0;
         start = 0;
         init_key = 128'h2b7e151628aed2a6abf7158809cf4f3c;
         round_number = 0;
 
         // Testing reset
-        reset = 0;
-        #10;
+        #30;
         reset = 1;
         #10;
 
@@ -63,7 +62,7 @@ module key_expansion_tb();
         
             #1;
 
-            if (current_round_key != expected_key) begin
+            if (current_round_key !== expected_key) begin
                 $display("Error at round %0d: got %h, expected %h", i, current_round_key, expected_key);
                 error_count = error_count + 1;
             end
