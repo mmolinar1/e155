@@ -91,15 +91,6 @@ or remove the initialization in the declaration of variable.
 Top level modules:
 	key_expansion_tb
 
-} {} {}} C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv {2 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv
-Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
--- Compiling module shift_rows_tb
-** Warning: C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv(27): (vlog-2244) Variable 'expected_state_out' is implicitly static. You must either explicitly declare it as static or automatic
-or remove the initialization in the declaration of variable.
-
-Top level modules:
-	shift_rows_tb
-
 } {} {}} C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/key_expansion.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/key_expansion.sv
 Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
 -- Compiling module key_expansion
@@ -115,6 +106,15 @@ or remove the initialization in the declaration of variable.
 
 Top level modules:
 	add_round_key_tb
+
+} {} {}} C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv {2 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module shift_rows_tb
+** Warning: C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/shift_rows_tb.sv(27): (vlog-2244) Variable 'expected_state_out' is implicitly static. You must either explicitly declare it as static or automatic
+or remove the initialization in the declaration of variable.
+
+Top level modules:
+	shift_rows_tb
 
 } {} {}} C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/mix_columns.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/mmolinar/Desktop/e155/lab7/lab07_fpga/src/mix_columns.sv
 Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
