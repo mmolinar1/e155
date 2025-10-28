@@ -6,7 +6,7 @@
 /////////////////////////////////////////////
 
 module testbench_aes_spi();
-    logic clk, load, done, sck, sdi, sdo;
+    logic clk, reset, load, done, sck, sdi, sdo;
     logic [127:0] key, plaintext, cyphertext, expected;
 		logic [255:0] comb;
     logic [8:0] i;
@@ -15,7 +15,15 @@ module testbench_aes_spi();
     logic delay;
     
     // device under test
-    aes dut(clk, sck, sdi, sdo, load, done);
+    aes dut(clk, reset, sck, sdi, sdo, load, done);
+
+    // module aes(input  logic clk,
+		//            input  logic reset,
+    //            input  logic sck, 
+    //            input  logic sdi,
+    //            output logic sdo,
+    //            input  logic load,
+    //            output logic done);
     
     // test case
     initial begin   
@@ -45,6 +53,8 @@ module testbench_aes_spi();
         
     initial begin
       i = 0;
+      reset = 1'b0; #30; reset = 1'b1; #10;
+      // reset = 1'b1;
       load = 1'b1;
       // set delay to true
       delay = 1;

@@ -15,7 +15,8 @@ module aes_spi(input  logic sck,
                input  logic sdi,
                output logic sdo,
                input  logic done,
-               output logic [127:0] key, plaintext,
+               output logic [127:0] key,
+               output logic [127:0] plaintext,
                input  logic [127:0] cyphertext);
 
     logic         sdodelayed, wasdone;

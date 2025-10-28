@@ -1,1 +1,0 @@
-C:/intelFPGA_lite/24.1std/questa_fse/win64/VisualizerRls/bin/viscom.exe -nolock -quiet -jmem_size 393216 work.testbench_aes_core(fast) -quiet -auto_acc_if_foreign -work work +acc -L iCE40UP -Lf iCE40UP -allow_unnamed -o _opt1 -id 46-00be43eaeac0-690028e7-37f-3004 +__betafsm

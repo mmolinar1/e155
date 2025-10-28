@@ -94,7 +94,7 @@ module aes_core(input  logic         clk,
         end else begin
             case(state)
                 IDLE: 
-                    if (load) begin
+                    if (!load) begin
                         state_reg <= plaintext;
                         round_count <= 0;
                         key_expansion_start <= 1;
@@ -118,7 +118,7 @@ module aes_core(input  logic         clk,
                     if(round_count < 9) begin
                         state_reg <= mix_cols_out;
                     end
-                    
+
                     if(round_count < 10) begin
                         round_count <= round_count + 1;
                     end
@@ -136,7 +136,7 @@ module aes_core(input  logic         clk,
     
         case(state)
             IDLE: 
-                if (load) nextstate = WAIT_KEYS;
+                if (!load) nextstate = WAIT_KEYS;
                     else nextstate = IDLE;
             WAIT_KEYS: if(key_expansion_done) nextstate = FIRST_ROUND_KEY;
                        else nextstate = WAIT_KEYS;
@@ -160,7 +160,7 @@ module aes_core(input  logic         clk,
             end
             DONE: begin
                 done = 1;
-                nextstate = IDLE;
+                nextstate = DONE;
             end
             default: nextstate = state;
         endcase
