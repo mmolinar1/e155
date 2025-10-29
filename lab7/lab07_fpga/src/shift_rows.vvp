@@ -1,0 +1,95 @@
+#! /Users/matthewmolinar/Desktop/oss-cad-suite/bin/vvp
+:ivl_version "13.0 (devel)" "(s20251012-33-ga7502173d)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/Users/matthewmolinar/Desktop/oss-cad-suite/lib/ivl/system.vpi";
+:vpi_module "/Users/matthewmolinar/Desktop/oss-cad-suite/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/Users/matthewmolinar/Desktop/oss-cad-suite/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/Users/matthewmolinar/Desktop/oss-cad-suite/lib/ivl/v2005_math.vpi";
+:vpi_module "/Users/matthewmolinar/Desktop/oss-cad-suite/lib/ivl/va_math.vpi";
+:vpi_module "/Users/matthewmolinar/Desktop/oss-cad-suite/lib/ivl/v2009.vpi";
+S_0x1053df710 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0x1053dc630 .scope module, "shift_rows_tb" "shift_rows_tb" 3 11;
+ .timescale -12 -12;
+v0x9cd0157c0_0 .var "expected_state_out", 127 0;
+v0x9cd015860_0 .var "state_in", 127 0;
+v0x9cd015900_0 .net "state_out", 127 0, L_0x9cc87c1e0;  1 drivers
+S_0x1053dc7b0 .scope module, "dut" "shift_rows" 3 15, 4 12 0, S_0x1053dc630;
+ .timescale 0 0;
+    .port_info 0 /INPUT 128 "state_in";
+    .port_info 1 /OUTPUT 128 "state_out";
+v0x9cd014780_0 .net *"_ivl_11", 7 0, L_0x1053e5900;  1 drivers
+v0x9cd014c80_0 .net *"_ivl_15", 7 0, L_0x1053e59a0;  1 drivers
+v0x9cd015180_0 .net *"_ivl_19", 7 0, L_0x1053e5a40;  1 drivers
+v0x9cd0143c0_0 .net *"_ivl_23", 7 0, L_0x1053e5ae0;  1 drivers
+v0x9cd0148c0_0 .net *"_ivl_27", 7 0, L_0x1053e5b80;  1 drivers
+v0x9cd014dc0_0 .net *"_ivl_3", 7 0, L_0x1053e57c0;  1 drivers
+v0x9cd0152c0_0 .net *"_ivl_31", 7 0, L_0x1053e5d20;  1 drivers
+v0x9cd014500_0 .net *"_ivl_35", 7 0, L_0x1053e5dc0;  1 drivers
+v0x9cd014a00_0 .net *"_ivl_39", 7 0, L_0x1053e5e60;  1 drivers
+v0x9cd014f00_0 .net *"_ivl_43", 7 0, L_0x1053e5f00;  1 drivers
+v0x9cd015400_0 .net *"_ivl_47", 7 0, L_0x1053e5fa0;  1 drivers
+v0x9cd014640_0 .net *"_ivl_51", 7 0, L_0x9cc87c000;  1 drivers
+v0x9cd014b40_0 .net *"_ivl_55", 7 0, L_0x9cc87c0a0;  1 drivers
+v0x9cd015040_0 .net *"_ivl_59", 7 0, L_0x9cc87c140;  1 drivers
+v0x9cd015540_0 .net *"_ivl_64", 7 0, L_0x9cc87c280;  1 drivers
+v0x9cd0155e0_0 .net *"_ivl_7", 7 0, L_0x1053e5860;  1 drivers
+v0x9cd015680_0 .net "state_in", 127 0, v0x9cd015860_0;  1 drivers
+v0x9cd015720_0 .net "state_out", 127 0, L_0x9cc87c1e0;  alias, 1 drivers
+L_0x1053e57c0 .part v0x9cd015860_0, 120, 8;
+L_0x1053e5860 .part v0x9cd015860_0, 88, 8;
+L_0x1053e5900 .part v0x9cd015860_0, 56, 8;
+L_0x1053e59a0 .part v0x9cd015860_0, 24, 8;
+L_0x1053e5a40 .part v0x9cd015860_0, 80, 8;
+L_0x1053e5ae0 .part v0x9cd015860_0, 48, 8;
+L_0x1053e5b80 .part v0x9cd015860_0, 16, 8;
+L_0x1053e5d20 .part v0x9cd015860_0, 112, 8;
+L_0x1053e5dc0 .part v0x9cd015860_0, 40, 8;
+L_0x1053e5e60 .part v0x9cd015860_0, 8, 8;
+L_0x1053e5f00 .part v0x9cd015860_0, 104, 8;
+L_0x1053e5fa0 .part v0x9cd015860_0, 72, 8;
+L_0x9cc87c000 .part v0x9cd015860_0, 0, 8;
+L_0x9cc87c0a0 .part v0x9cd015860_0, 96, 8;
+L_0x9cc87c140 .part v0x9cd015860_0, 64, 8;
+LS_0x9cc87c1e0_0_0 .concat8 [ 8 8 8 8], L_0x9cc87c280, L_0x1053e5fa0, L_0x1053e5d20, L_0x1053e59a0;
+LS_0x9cc87c1e0_0_4 .concat8 [ 8 8 8 8], L_0x9cc87c140, L_0x1053e5f00, L_0x1053e5b80, L_0x1053e5900;
+LS_0x9cc87c1e0_0_8 .concat8 [ 8 8 8 8], L_0x9cc87c0a0, L_0x1053e5e60, L_0x1053e5ae0, L_0x1053e5860;
+LS_0x9cc87c1e0_0_12 .concat8 [ 8 8 8 8], L_0x9cc87c000, L_0x1053e5dc0, L_0x1053e5a40, L_0x1053e57c0;
+L_0x9cc87c1e0 .concat8 [ 32 32 32 32], LS_0x9cc87c1e0_0_0, LS_0x9cc87c1e0_0_4, LS_0x9cc87c1e0_0_8, LS_0x9cc87c1e0_0_12;
+L_0x9cc87c280 .part v0x9cd015860_0, 32, 8;
+    .scope S_0x1053dc630;
+T_0 ;
+    %vpi_call/w 3 23 "$dumpfile", "shift_rows.vcd" {0 0 0};
+    %vpi_call/w 3 24 "$dumpvars", 32'sb00000000000000000000000000000000, S_0x1053dc630 {0 0 0};
+    %pushi/vec4 3569311024, 0, 32;
+    %concati/vec4 3769914030, 0, 32;
+    %concati/vec4 3091272177, 0, 32;
+    %concati/vec4 505911525, 0, 32;
+    %store/vec4 v0x9cd0157c0_0, 0, 128;
+    %pushi/vec4 3559330222, 0, 32;
+    %concati/vec4 3770652913, 0, 32;
+    %concati/vec4 3098828261, 0, 32;
+    %concati/vec4 507597360, 0, 32;
+    %store/vec4 v0x9cd015860_0, 0, 128;
+    %delay 10, 0;
+    %load/vec4 v0x9cd015900_0;
+    %load/vec4 v0x9cd0157c0_0;
+    %cmp/e;
+    %jmp/0xz  T_0.0, 6;
+    %vpi_call/w 3 37 "$display", "Test passed" {0 0 0};
+    %jmp T_0.1;
+T_0.0 ;
+    %vpi_call/w 3 39 "$display", "Test failed" {0 0 0};
+T_0.1 ;
+    %vpi_call/w 3 43 "$display", "Tests completed" {0 0 0};
+    %vpi_call/w 3 44 "$stop" {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 5;
+    "N/A";
+    "<interactive>";
+    "-";
+    "shift_rows_tb.sv";
+    "shift_rows.sv";
