@@ -120,7 +120,7 @@ module aes_core(input  logic         clk,
                     end
 
                     if(round_count < 10) begin
-                        round_count <= round_count + 1;
+                        round_count <= round_count + 1'b1;
                     end
                 end
                 ADD_ROUND_KEY: begin

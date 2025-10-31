@@ -18,7 +18,9 @@ module aes(input  logic clk,
            output logic done);
                     
     logic [127:0] key, plaintext, cyphertext;
-            
-    aes_spi spi(sck, sdi, sdo, done, key, plaintext, cyphertext);   
-    aes_core core(clk, reset, load, key, plaintext, done, cyphertext);
+	
+    HSOSC #(.CLKHF_DIV(2'b11)) hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
+	
+    aes_spi spi(sck, sdi, sdo, done, key, plaintext, cyphertext);
+    aes_core core(int_osc, reset, load, key, plaintext, done, cyphertext);
 endmodule

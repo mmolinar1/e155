@@ -94,7 +94,7 @@ module key_expansion(input  logic         clk,
                     // else just keep the pervious word
                     w[i] <= w_im4 ^ w_im1;
                 end
-                i <= i + 1;
+                i <= i + 1'b1;
 			end
             default: begin
 				i <= 0;
