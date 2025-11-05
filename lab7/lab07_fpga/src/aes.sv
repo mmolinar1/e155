@@ -18,6 +18,7 @@ module aes(input  logic clk,
            output logic done);
                     
     logic [127:0] key, plaintext, cyphertext;
+    logic int_osc;
 	
     HSOSC #(.CLKHF_DIV(2'b11)) hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
 	
