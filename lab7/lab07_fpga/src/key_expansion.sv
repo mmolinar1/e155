@@ -11,7 +11,7 @@
 /////////////////////////////////////////////
 
    module key_expansion(input  logic       clk,
-                        input  logic       reset,
+                        input logic load,
                         input  logic       start,    // flag indicating when to start key expansion
                         input  logic [127:0] init_key,
                         input  logic [3:0]   round_number,
@@ -76,7 +76,7 @@
 
        // State register
        always_ff @(posedge clk) begin
-           if (~reset) begin
+           if (load) begin
                state <= IDLE;
            end else begin
                state <= nextstate; 
@@ -90,7 +90,7 @@
        always_ff @(posedge clk) begin
            case(state)
                IDLE: 
-                   if (start) begin
+                   if (load) begin
                        i <= 0;
                    end
                LOAD: begin

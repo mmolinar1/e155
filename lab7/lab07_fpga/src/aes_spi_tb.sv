@@ -15,7 +15,7 @@ module testbench_aes_spi();
     logic delay;
     
     // device under test
-    aes dut(clk, reset, sck, sdi, sdo, load, done);
+    aes dut(clk, sck, sdi, sdo, load, done);
 
     // module aes(input  logic clk,
 		//            input  logic reset,

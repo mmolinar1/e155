@@ -24,7 +24,6 @@
 /////////////////////////////////////////////
 
 module aes_core(input  logic         clk,
-                input  logic         reset,
                 input  logic         load,
                 input  logic [127:0] key, 
                 input  logic [127:0] plaintext, 
@@ -71,14 +70,14 @@ module aes_core(input  logic         clk,
     );
 
     key_expansion key_expansion(
-        .clk(clk), .reset(reset), .start(key_expansion_start), 
+        .clk(clk), .load(load), .start(key_expansion_start), 
         .init_key(key), .round_number(round_count), 
         .round_key(current_round_key), .done(key_expansion_done)
     );
 
     // State register
     always_ff @(posedge clk) begin
-        if (~reset) begin
+        if (load) begin
 			state <= IDLE;
         end else begin
 			state <= nextstate;	
@@ -87,7 +86,7 @@ module aes_core(input  logic         clk,
 	
 	// logic for control signals
     always_ff @(posedge clk) begin
-        if (~reset) begin
+        if (load) begin
             state_reg <= '0;
             round_count <= 0;
             key_expansion_start <= 0;
